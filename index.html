@@ -47,6 +47,10 @@
             padding: 10px;
             border-radius: 5px;
             margin-top: 10px;
+            text-align: left;
+        }
+        .chat-box p {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -84,14 +88,38 @@
 
         function sendMessage() {
             let input = document.getElementById("chatInput").value;
+            let chatBox = document.getElementById("chatHistory");
+
             if (input.trim() !== "") {
-                let chatBox = document.getElementById("chatHistory");
-                let message = document.createElement("p");
-                message.innerText = "You: " + input;
-                chatBox.appendChild(message);
+                let userMessage = document.createElement("p");
+                userMessage.innerHTML = "<strong>You:</strong> " + input;
+                chatBox.appendChild(userMessage);
+
+                let botResponse = generateBotResponse(input);
+                let botMessage = document.createElement("p");
+                botMessage.innerHTML = "<strong>Bot:</strong> " + botResponse;
+                chatBox.appendChild(botMessage);
+
                 document.getElementById("chatInput").value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        function generateBotResponse(input) {
+            input = input.toLowerCase();
+            if (input.includes("hello") || input.includes("hi")) {
+                return "Hello! How are you feeling today?";
+            } else if (input.includes("stress") || input.includes("anxiety")) {
+                return "I'm here to help! Try taking deep breaths or writing down your thoughts.";
+            } else if (input.includes("sad") || input.includes("depressed")) {
+                return "I'm sorry you're feeling this way. Remember, you're not alone. Maybe try listening to your favorite music?";
+            } else if (input.includes("happy") || input.includes("good")) {
+                return "That's great to hear! Keep doing what makes you feel good!";
+            } else {
+                return "I'm here to listen. Tell me more about how you're feeling.";
             }
         }
     </script>
 </body>
 </html>
+
