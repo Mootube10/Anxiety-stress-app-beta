@@ -1,0 +1,72 @@
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
+import { Moon, Sun, MessageCircle, BookOpen } from "lucide-react";
+
+export default function SerenityHub() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [mood, setMood] = useState(5);
+  const [journal, setJournal] = useState("");
+  
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  return (
+    <div className={darkMode ? "bg-gray-900 text-white min-h-screen p-6" : "bg-gray-100 text-gray-900 min-h-screen p-6"}>
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Serenity Hub</h1>
+        <Button onClick={toggleDarkMode} variant="outline">
+          {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <Card>
+          <CardContent className="p-4">
+            <h2 className="text-xl font-semibold">Mood Tracker</h2>
+            <input 
+              type="range" 
+              min="1" max="10" 
+              value={mood} 
+              onChange={(e) => setMood(e.target.value)} 
+              className="w-full mt-2"
+            />
+            <p className="mt-2">Current Mood: {mood}/10</p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <h2 className="text-xl font-semibold">Daily Journal</h2>
+            <Textarea placeholder="Write your thoughts here..." value={journal} onChange={(e) => setJournal(e.target.value)} className="mt-2" />
+            <Button className="mt-2 w-full">Save Entry</Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <Card>
+          <CardContent className="p-4">
+            <h2 className="text-xl font-semibold">AI Chatbot</h2>
+            <p className="text-sm text-gray-600">Ask for guidance, relaxation tips, or emotional support.</p>
+            <Button className="mt-2 w-full flex items-center gap-2">
+              <MessageCircle size={20} /> Start Chat
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="p-4">
+            <h2 className="text-xl font-semibold">Resource Library</h2>
+            <p className="text-sm text-gray-600">Access meditation guides, articles, and expert advice.</p>
+            <Button className="mt-2 w-full flex items-center gap-2">
+              <BookOpen size={20} /> View Resources
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
