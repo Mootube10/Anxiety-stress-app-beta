@@ -4,14 +4,30 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { Moon, Sun, MessageCircle, BookOpen } from "lucide-react";
+import { Moon, Sun, MessageCircle, BookOpen, PlayCircle, Smile, Edit3 } from "lucide-react";
 
 export default function SerenityHub() {
   const [darkMode, setDarkMode] = useState(false);
   const [mood, setMood] = useState(5);
   const [journal, setJournal] = useState("");
-  
+  const [chat, setChat] = useState("");
+  const [chatHistory, setChatHistory] = useState([]);
+  const moodHistory = [
+    { day: "Mon", mood: 7 },
+    { day: "Tue", mood: 6 },
+    { day: "Wed", mood: 8 },
+    { day: "Thu", mood: 5 },
+    { day: "Fri", mood: 7 },
+  ];
+
   const toggleDarkMode = () => setDarkMode(!darkMode);
+
+  const handleChatSend = () => {
+    if (chat.trim()) {
+      setChatHistory([...chatHistory, { user: "You", message: chat }]);
+      setChat("");
+    }
+  };
 
   return (
     <div className={darkMode ? "bg-gray-900 text-white min-h-screen p-6" : "bg-gray-100 text-gray-900 min-h-screen p-6"}>
@@ -25,7 +41,7 @@ export default function SerenityHub() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-xl font-semibold">Mood Tracker</h2>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><Smile size={20} /> Mood Tracker</h2>
             <input 
               type="range" 
               min="1" max="10" 
@@ -34,12 +50,20 @@ export default function SerenityHub() {
               className="w-full mt-2"
             />
             <p className="mt-2">Current Mood: {mood}/10</p>
+            <ResponsiveContainer width="100%" height={100}>
+              <LineChart data={moodHistory}>
+                <XAxis dataKey="day" stroke={darkMode ? "#fff" : "#000"} />
+                <YAxis stroke={darkMode ? "#fff" : "#000"} />
+                <Tooltip />
+                <Line type="monotone" dataKey="mood" stroke="#82ca9d" strokeWidth={2} />
+              </LineChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-xl font-semibold">Daily Journal</h2>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><Edit3 size={20} /> Daily Journal</h2>
             <Textarea placeholder="Write your thoughts here..." value={journal} onChange={(e) => setJournal(e.target.value)} className="mt-2" />
             <Button className="mt-2 w-full">Save Entry</Button>
           </CardContent>
@@ -49,21 +73,34 @@ export default function SerenityHub() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-xl font-semibold">AI Chatbot</h2>
-            <p className="text-sm text-gray-600">Ask for guidance, relaxation tips, or emotional support.</p>
-            <Button className="mt-2 w-full flex items-center gap-2">
-              <MessageCircle size={20} /> Start Chat
-            </Button>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><MessageCircle size={20} /> AI Chatbot</h2>
+            <div className="h-32 overflow-auto bg-gray-200 dark:bg-gray-800 p-2 rounded mt-2">
+              {chatHistory.map((entry, index) => (
+                <p key={index} className="text-sm"><b>{entry.user}:</b> {entry.message}</p>
+              ))}
+            </div>
+            <Input placeholder="Type your message..." value={chat} onChange={(e) => setChat(e.target.value)} className="mt-2" />
+            <Button onClick={handleChatSend} className="mt-2 w-full">Send</Button>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent className="p-4">
-            <h2 className="text-xl font-semibold">Resource Library</h2>
-            <p className="text-sm text-gray-600">Access meditation guides, articles, and expert advice.</p>
+            <h2 className="text-xl font-semibold flex items-center gap-2"><BookOpen size={20} /> Resource Library</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Access meditation guides, articles, and expert advice.</p>
             <Button className="mt-2 w-full flex items-center gap-2">
               <BookOpen size={20} /> View Resources
             </Button>
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="mt-6">
+        <Card>
+          <CardContent className="p-4 flex flex-col items-center">
+            <h2 className="text-xl font-semibold flex items-center gap-2"><PlayCircle size={20} /> Guided Breathing</h2>
+            <p className="text-sm text-gray-600 dark:text-gray-300">Follow the animation to sync your breathing.</p>
+            <div className="w-24 h-24 bg-blue-400 rounded-full animate-pulse mt-4"></div>
           </CardContent>
         </Card>
       </div>
