@@ -12,15 +12,20 @@
             background: linear-gradient(to right, #4facfe, #00f2fe);
             color: white;
             display: flex;
+            flex-direction: row;
         }
         .sidebar {
             width: 200px;
             background-color: rgba(0, 0, 0, 0.8);
             height: 100vh;
             padding-top: 20px;
-            display: flex;
+            display: none;
             flex-direction: column;
             align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
         }
         .sidebar a {
             color: white;
@@ -77,10 +82,30 @@
         h2 {
             text-align: center;
         }
+        #greeting {
+            text-align: center;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        #menuButton {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            color: white;
+            background: none;
+            border: none;
+        }
     </style>
 </head>
 <body>
-    <div class="sidebar">
+    <!-- Menu Button -->
+    <button id="menuButton" onclick="toggleSidebar()">☰</button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
         <a href="#" onclick="showMood()">Mood Tracker</a>
         <a href="#" onclick="showJournal()">Daily Journal</a>
         <a href="#" onclick="showChat()">AI Chatbot</a>
@@ -88,7 +113,13 @@
         <a href="#" onclick="showLogs()">Show Logs</a>
     </div>
 
+    <!-- Main Content -->
     <div class="container" id="mainContent">
+        <div id="greeting">
+            <h1>Welcome to Serenity Hub!</h1>
+            <p>Hi there! I'm your virtual assistant, here to help you with stress, anxiety, and relaxation. Click on the ☰ menu to explore the app!</p>
+        </div>
+        
         <!-- Mood Tracker Section -->
         <div id="moodSection" style="display:none;">
             <h2>Mood Tracker</h2>
@@ -129,6 +160,20 @@
     </div>
 
     <script>
+        // Toggle Sidebar
+        function toggleSidebar() {
+            let sidebar = document.getElementById("sidebar");
+            let menuButton = document.getElementById("menuButton");
+            
+            if (sidebar.style.display === "none" || sidebar.style.display === "") {
+                sidebar.style.display = "flex";
+                menuButton.innerHTML = "X";  // Change to 'X'
+            } else {
+                sidebar.style.display = "none";
+                menuButton.innerHTML = "☰";  // Change back to '☰'
+            }
+        }
+
         function showMood() {
             hideAllSections();
             document.getElementById("moodSection").style.display = "block";
@@ -232,7 +277,7 @@
                     response = "You're welcome! I'm always here if you need to talk.";
                 } else if (input.includes("help") || input.includes("assist")) {
                     response = "I'm here to assist. Do you need some coping strategies or resources?";
-                      } else if (input.includes("strategies")) {
+                } else if (input.includes("strategies")) {
                 response = "Here are some strategies to manage anxiety:\n\n" + 
                 "1. **Deep Breathing**: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
                 "2. **Progressive Muscle Relaxation**: Slowly tense and then relax each muscle group.\n" +
@@ -255,6 +300,7 @@
             } else {
                     response = "Thank you for sharing this information. Is there something else you'd like to talk about?";
                 }
+
                 
                 let responseMessage = document.createElement("p");
                 responseMessage.innerText = "Bot: " + response;
