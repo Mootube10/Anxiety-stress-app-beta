@@ -111,6 +111,8 @@
         <a href="#" onclick="showChat()">AI Chatbot</a>
         <a href="#" onclick="showInfo()">Information</a>
         <a href="#" onclick="showLogs()">Show Logs</a>
+        <!-- New Support Button -->
+        <a href="https://www.yourcompanywebsite.com" target="_blank">Support</a>
     </div>
 
     <!-- Main Content -->
@@ -271,12 +273,6 @@
                     response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
                 } else if (input.includes("nervous") || input.includes("worried")) {
                     response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
-                } else if (input.includes("happy") || input.includes("good")) {
-                    response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
-                } else if (input.includes("thank you")) {
-                    response = "You're welcome! I'm always here if you need to talk.";
-                } else if (input.includes("help") || input.includes("assist")) {
-                    response = "I'm here to assist. Do you need some coping strategies or resources?";
                 } else if (input.includes("strategies")) {
                 response = "Here are some strategies to manage anxiety:\n\n" + 
                 "1. **Deep Breathing**: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
@@ -301,15 +297,10 @@
                     response = "Thank you for sharing this information. Is there something else you'd like to talk about?";
                 }
 
-                
-                let responseMessage = document.createElement("p");
-                responseMessage.innerText = "Bot: " + response;
-                chatBox.appendChild(responseMessage);
-                
-                let chatLogs = JSON.parse(localStorage.getItem("chatLogs")) || [];
-                chatLogs.push("You: " + input);
-                chatLogs.push("Bot: " + response);
-                localStorage.setItem("chatLogs", JSON.stringify(chatLogs));
+
+                let botMessage = document.createElement("p");
+                botMessage.innerText = "Bot: " + response;
+                chatBox.appendChild(botMessage);
                 
                 document.getElementById("chatInput").value = "";
             }
