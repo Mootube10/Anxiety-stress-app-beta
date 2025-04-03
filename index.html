@@ -63,7 +63,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             padding: 20px;
-            transition: 0.3s;
+            transition: left 0.3s ease;
         }
         .sidebar a {
             display: block;
@@ -145,7 +145,7 @@
         }
 
         function getResponse(input) {
-            const responses = {
+            input = input.toLowerCase();
             if (input.includes("hello") || input.includes("hi")) {
                 return "Hello! How are you feeling today?";
             } else if (input.includes("stress") || input.includes("anxiety")) {
@@ -193,12 +193,15 @@
 
         function toggleLogs() {
             let chatBox = document.getElementById("chatHistory");
-            if (logsVisible) {
-                chatBox.innerHTML = "";
-            } else {
-                chatBox.innerHTML = localStorage.getItem("journal") || "No logs available.";
-            }
             logsVisible = !logsVisible;
+            if (logsVisible) {
+                let savedLog = localStorage.getItem("journal") || "No logs available.";
+                let logEntry = document.createElement("p");
+                logEntry.innerText = "Journal Entry: " + savedLog;
+                chatBox.appendChild(logEntry);
+            } else {
+                chatBox.innerHTML = "";
+            }
         }
     </script>
 </body>
