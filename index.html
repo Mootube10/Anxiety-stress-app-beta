@@ -11,15 +11,38 @@
             padding: 0;
             background: linear-gradient(to right, #4facfe, #00f2fe);
             color: white;
+            display: flex;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            height: 100vh;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            margin: 10px 0;
+            padding: 10px;
+            width: 80%;
             text-align: center;
+            background-color: #4facfe;
+            border-radius: 5px;
+        }
+        .sidebar a:hover {
+            background-color: #00f2fe;
         }
         .container {
-            max-width: 600px;
-            margin: 40px auto;
+            flex: 1;
+            margin: 40px;
             padding: 20px;
             background: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
         }
         .button {
             background: #00f2fe;
@@ -48,31 +71,98 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+        .form-container {
+            margin-top: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Serenity Hub</h1>
-        
-        <h2>Mood Tracker</h2>
-        <input type="range" id="moodRange" min="1" max="10" value="5" oninput="updateMood()">
-        <p id="moodValue">Current Mood: 5/10</p>
+    <div class="sidebar">
+        <a href="#" onclick="showMood()">Mood Tracker</a>
+        <a href="#" onclick="showJournal()">Daily Journal</a>
+        <a href="#" onclick="showChat()">AI Chatbot</a>
+        <a href="#" onclick="showInfo()">Information</a>
+        <a href="#" onclick="showLogs()">Show Logs</a>
+    </div>
 
-        <h2>Daily Journal</h2>
-        <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
-        <button class="button" onclick="saveJournal()">Save Entry</button>
-        
-        <h2>AI Chatbot</h2>
-        <div class="chat-box" id="chatHistory"></div>
-        <input type="text" id="chatInput" placeholder="Type a message...">
-        <button class="button" onclick="sendMessage()">Send</button>
-        
-        <h2>Information & Coping Strategies</h2>
-        <div class="chat-box" id="infoLogs"></div>
-        <button class="button" onclick="showLogs()">Show Logs</button>
+    <div class="container" id="mainContent">
+        <!-- Mood Tracker Section -->
+        <div id="moodSection" style="display:none;">
+            <h2>Mood Tracker</h2>
+            <input type="range" id="moodRange" min="1" max="10" value="5" oninput="updateMood()">
+            <p id="moodValue">Current Mood: 5/10</p>
+        </div>
+
+        <!-- Daily Journal Section -->
+        <div id="journalSection" style="display:none;">
+            <h2>Daily Journal</h2>
+            <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
+            <button class="button" onclick="saveJournal()">Save Entry</button>
+        </div>
+
+        <!-- Chatbot Section -->
+        <div id="chatSection" style="display:none;">
+            <h2>AI Chatbot</h2>
+            <div class="chat-box" id="chatHistory"></div>
+            <input type="text" id="chatInput" placeholder="Type a message...">
+            <button class="button" onclick="sendMessage()">Send</button>
+        </div>
+
+        <!-- Information Section -->
+        <div id="infoSection" style="display:none;">
+            <h2>Information</h2>
+            <div class="form-container">
+                <textarea id="infoInput" placeholder="What caused your anxiety?"></textarea>
+                <textarea id="feelingInput" placeholder="How are you feeling right now?"></textarea>
+                <button class="button" onclick="saveInfo()">Save Information</button>
+            </div>
+        </div>
+
+        <!-- Logs Section -->
+        <div id="logsSection" style="display:none;">
+            <h2>Logs</h2>
+            <div class="chat-box" id="infoLogs"></div>
+        </div>
     </div>
 
     <script>
+        function showMood() {
+            hideAllSections();
+            document.getElementById("moodSection").style.display = "block";
+        }
+
+        function showJournal() {
+            hideAllSections();
+            document.getElementById("journalSection").style.display = "block";
+        }
+
+        function showChat() {
+            hideAllSections();
+            document.getElementById("chatSection").style.display = "block";
+        }
+
+        function showInfo() {
+            hideAllSections();
+            document.getElementById("infoSection").style.display = "block";
+        }
+
+        function showLogs() {
+            hideAllSections();
+            document.getElementById("logsSection").style.display = "block";
+            showLogData();
+        }
+
+        function hideAllSections() {
+            document.getElementById("moodSection").style.display = "none";
+            document.getElementById("journalSection").style.display = "none";
+            document.getElementById("chatSection").style.display = "none";
+            document.getElementById("infoSection").style.display = "none";
+            document.getElementById("logsSection").style.display = "none";
+        }
+
         function updateMood() {
             let mood = document.getElementById("moodRange").value;
             document.getElementById("moodValue").innerText = "Current Mood: " + mood + "/10";
@@ -87,56 +177,62 @@
             }
         }
 
-        function showLogs() {
-            let infoBox = document.getElementById("infoLogs");
-            infoBox.innerHTML = "";
-
-            let logs = [
-                "Coping Strategies: Deep breathing, meditation, grounding techniques, journaling.",
-                "Breathing Techniques: Inhale 4 sec, hold 4 sec, exhale 4 sec. Repeat 3 times.",
-                "Relaxation Exercises: Progressive muscle relaxation, guided visualization.",
-                "Crisis Resources: Crisis Text Line (Text HOME to 741741), National Suicide Prevention Lifeline (1-800-273-8255)."
-            ];
-
-            let chatLogs = JSON.parse(localStorage.getItem("chatLogs")) || [];
-            logs = logs.concat(chatLogs);
-
-            logs.forEach(log => {
-                let logEntry = document.createElement("p");
-                logEntry.innerText = log;
-                infoBox.appendChild(logEntry);
-            });
+        function saveInfo() {
+            let info = document.getElementById("infoInput").value;
+            let feeling = document.getElementById("feelingInput").value;
+            if (info.trim() !== "" && feeling.trim() !== "") {
+                let infoData = {
+                    cause: info,
+                    feeling: feeling
+                };
+                localStorage.setItem("infoData", JSON.stringify(infoData));
+                alert("Information saved!");
+                document.getElementById("infoInput").value = "";
+                document.getElementById("feelingInput").value = "";
+            }
         }
 
-<script>
-    function sendMessage() {
-        let input = document.getElementById("chatInput").value.toLowerCase();
-        let chatBox = document.getElementById("chatHistory");
-        
-        if (input.trim() !== "") {
-            let message = document.createElement("p");
-            message.innerText = "You: " + input;
-            chatBox.appendChild(message);
+        function showLogData() {
+            let infoLogs = document.getElementById("infoLogs");
+            infoLogs.innerHTML = "";
+            let infoData = JSON.parse(localStorage.getItem("infoData"));
+            if (infoData) {
+                let logEntry = document.createElement("p");
+                logEntry.innerText = `Cause: ${infoData.cause}\nFeeling: ${infoData.feeling}`;
+                infoLogs.appendChild(logEntry);
+            } else {
+                infoLogs.innerText = "No logs available.";
+            }
+        }
+
+        function sendMessage() {
+            let input = document.getElementById("chatInput").value.toLowerCase();
+            let chatBox = document.getElementById("chatHistory");
             
-            let response;
-            
-            if (input.includes("hello") || input.includes("hi")) {
-                response = "Hello! How are you feeling today?";
-            } else if (input.includes("stress") || input.includes("anxiety")) {
-                response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
-            } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
-                response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
-            } else if (input.includes("sad") || input.includes("depressed")) {
-                response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
-            } else if (input.includes("nervous") || input.includes("worried")) {
-                response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
-            } else if (input.includes("happy") || input.includes("good")) {
-                response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
-            } else if (input.includes("thank you")) {
-                response = "You're welcome! I'm always here if you need to talk.";
-            } else if (input.includes("help") || input.includes("assist")) {
-                response = "I'm here to assist. Do you need some coping strategies or resources?";
-            } else if (input.includes("strategies")) {
+            if (input.trim() !== "") {
+                let message = document.createElement("p");
+                message.innerText = "You: " + input;
+                chatBox.appendChild(message);
+                
+                let response;
+                
+                if (input.includes("hello") || input.includes("hi")) {
+                    response = "Hello! How are you feeling today?";
+                } else if (input.includes("stress") || input.includes("anxiety")) {
+                    response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
+                } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
+                    response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
+                } else if (input.includes("sad") || input.includes("depressed")) {
+                    response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
+                } else if (input.includes("nervous") || input.includes("worried")) {
+                    response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
+                } else if (input.includes("happy") || input.includes("good")) {
+                    response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
+                } else if (input.includes("thank you")) {
+                    response = "You're welcome! I'm always here if you need to talk.";
+                } else if (input.includes("help") || input.includes("assist")) {
+                    response = "I'm here to assist. Do you need some coping strategies or resources?";
+                      } else if (input.includes("strategies")) {
                 response = "Here are some strategies to manage anxiety:\n\n" + 
                 "1. **Deep Breathing**: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
                 "2. **Progressive Muscle Relaxation**: Slowly tense and then relax each muscle group.\n" +
@@ -156,26 +252,22 @@
                 "6. **Calm App**: Stress relief and sleep aid tools.\n" +
                 "7. **BetterHelp**: Online therapy service.\n" +
                 "8. **Local Support Groups**: Join local or online support groups for anxiety.";
-            } else if (input.includes("relax") || input.includes("breathe")) {
-                response = "Let’s do a quick breathing exercise: Breathe in deeply for 4 seconds, hold for 4, and exhale slowly for 4. Repeat 3 times.";
-            } else if (input.includes("alone") || input.includes("isolated")) {
-                response = "I hear you. It's tough to feel alone, but please know there are people who care about you. Reach out to them when you feel ready.";
             } else {
-                response = "Thank you for sharing this information. Is there something else you'd like to talk about?";
+                    response = "Thank you for sharing this information. Is there something else you'd like to talk about?";
+                }
+                
+                let responseMessage = document.createElement("p");
+                responseMessage.innerText = "Bot: " + response;
+                chatBox.appendChild(responseMessage);
+                
+                let chatLogs = JSON.parse(localStorage.getItem("chatLogs")) || [];
+                chatLogs.push("You: " + input);
+                chatLogs.push("Bot: " + response);
+                localStorage.setItem("chatLogs", JSON.stringify(chatLogs));
+                
+                document.getElementById("chatInput").value = "";
             }
-            
-            let responseMessage = document.createElement("p");
-            responseMessage.innerText = "Bot: " + response;
-            chatBox.appendChild(responseMessage);
-            
-            let chatLogs = JSON.parse(localStorage.getItem("chatLogs")) || [];
-            chatLogs.push("You: " + input);
-            chatLogs.push("Bot: " + response);
-            localStorage.setItem("chatLogs", JSON.stringify(chatLogs));
-            
-            document.getElementById("chatInput").value = "";
         }
-    }
-</script>
+    </script>
 </body>
 </html>
