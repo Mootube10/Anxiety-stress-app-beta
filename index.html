@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>eaceNest - Anxiety De-Stress App</title>
+    <title>Serenity Hub - Anxiety De-Stress App</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,43 +11,15 @@
             padding: 0;
             background: linear-gradient(to right, #4facfe, #00f2fe);
             color: white;
-            display: flex;
-            flex-direction: row;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: rgba(0, 0, 0, 0.8);
-            height: 100vh;
-            padding-top: 20px;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            margin: 10px 0;
-            padding: 10px;
-            width: 80%;
             text-align: center;
-            background-color: #4facfe;
-            border-radius: 5px;
-        }
-        .sidebar a:hover {
-            background-color: #00f2fe;
         }
         .container {
-            flex: 1;
-            margin: 40px;
+            max-width: 600px;
+            margin: 40px auto;
             padding: 20px;
             background: rgba(0, 0, 0, 0.7);
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
         }
         .button {
             background: #00f2fe;
@@ -76,140 +48,36 @@
             border-radius: 5px;
             margin-top: 10px;
         }
-        .form-container {
-            margin-top: 20px;
-        }
-        h2 {
-            text-align: center;
-        }
-        #greeting {
-            text-align: center;
-            font-size: 24px;
-            margin-top: 20px;
-        }
-        #menuButton {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 30px;
-            cursor: pointer;
-            z-index: 1001;
-            color: white;
-            background: none;
-            border: none;
-        }
     </style>
 </head>
 <body>
-    <!-- Menu Button -->
-    <button id="menuButton" onclick="toggleSidebar()">☰</button>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <a href="#" onclick="showMood()">Mood Tracker</a>
-        <a href="#" onclick="showJournal()">Daily Journal</a>
-        <a href="#" onclick="showChat()">AI Chatbot</a>
-        <a href="#" onclick="showInfo()">Information</a>
-        <a href="#" onclick="showLogs()">Show Logs</a>
-        <!-- New Support Button -->
-        <a href="https://mootube10.github.io/Cyberfusion/" target="_blank">Support</a>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container" id="mainContent">
-        <div id="greeting">
-            <h1>Welcome to eaceNest!</h1>
-            <p>Hi there! I'm your virtual assistant, here to help you with stress, anxiety, and relaxation. Click on the ☰ menu to explore the app!</p>
-        </div>
+    <div class="container">
+        <h1>Serenity Hub</h1>
         
-        <!-- Mood Tracker Section -->
-        <div id="moodSection" style="display:none;">
-            <h2>Mood Tracker</h2>
-            <input type="range" id="moodRange" min="1" max="10" value="5" oninput="updateMood()">
-            <p id="moodValue">Current Mood: 5/10</p>
-        </div>
+        <button class="button" onclick="activateCalmMode()">Calm Me Down</button>
 
-        <!-- Daily Journal Section -->
-        <div id="journalSection" style="display:none;">
-            <h2>Daily Journal</h2>
-            <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
-            <button class="button" onclick="saveJournal()">Save Entry</button>
-        </div>
+        <h2>Mood Tracker</h2>
+        <input type="range" id="moodRange" min="1" max="10" value="5" oninput="updateMood()">
+        <p id="moodValue">Current Mood: 5/10</p>
 
-        <!-- Chatbot Section -->
-        <div id="chatSection" style="display:none;">
-            <h2>AI Chatbot</h2>
-            <div class="chat-box" id="chatHistory"></div>
-            <input type="text" id="chatInput" placeholder="Type a message...">
-            <button class="button" onclick="sendMessage()">Send</button>
-        </div>
-
-        <!-- Information Section -->
-        <div id="infoSection" style="display:none;">
-            <h2>Information</h2>
-            <div class="form-container">
-                <textarea id="infoInput" placeholder="What caused your anxiety?"></textarea>
-                <textarea id="feelingInput" placeholder="How are you feeling right now?"></textarea>
-                <button class="button" onclick="saveInfo()">Save Information</button>
-            </div>
-        </div>
-
-        <!-- Logs Section -->
-        <div id="logsSection" style="display:none;">
-            <h2>Logs</h2>
-            <div class="chat-box" id="infoLogs"></div>
-        </div>
+        <h2>Daily Journal</h2>
+        <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
+        <button class="button" onclick="saveJournal()">Save Entry</button>
+        
+        <h2>AI Chatbot</h2>
+        <div class="chat-box" id="chatHistory"></div>
+        <input type="text" id="chatInput" placeholder="Type a message...">
+        <button class="button" onclick="sendMessage()">Send</button>
+        
+        <h2>Guided Meditation & Music Therapy</h2>
+        <button class="button" onclick="playMusic()">Play Calming Music</button>
+        <button class="button" onclick="stopMusic()">Stop Music</button>
+        
+        <h2>Emergency Support</h2>
+        <button class="button" onclick="showSupport()">Get Help</button>
     </div>
 
     <script>
-        // Toggle Sidebar
-        function toggleSidebar() {
-            let sidebar = document.getElementById("sidebar");
-            let menuButton = document.getElementById("menuButton");
-            
-            if (sidebar.style.display === "none" || sidebar.style.display === "") {
-                sidebar.style.display = "flex";
-                menuButton.innerHTML = "X";  // Change to 'X'
-            } else {
-                sidebar.style.display = "none";
-                menuButton.innerHTML = "☰";  // Change back to '☰'
-            }
-        }
-
-        function showMood() {
-            hideAllSections();
-            document.getElementById("moodSection").style.display = "block";
-        }
-
-        function showJournal() {
-            hideAllSections();
-            document.getElementById("journalSection").style.display = "block";
-        }
-
-        function showChat() {
-            hideAllSections();
-            document.getElementById("chatSection").style.display = "block";
-        }
-
-        function showInfo() {
-            hideAllSections();
-            document.getElementById("infoSection").style.display = "block";
-        }
-
-        function showLogs() {
-            hideAllSections();
-            document.getElementById("logsSection").style.display = "block";
-            showLogData();
-        }
-
-        function hideAllSections() {
-            document.getElementById("moodSection").style.display = "none";
-            document.getElementById("journalSection").style.display = "none";
-            document.getElementById("chatSection").style.display = "none";
-            document.getElementById("infoSection").style.display = "none";
-            document.getElementById("logsSection").style.display = "none";
-        }
-
         function updateMood() {
             let mood = document.getElementById("moodRange").value;
             document.getElementById("moodValue").innerText = "Current Mood: " + mood + "/10";
@@ -224,45 +92,24 @@
             }
         }
 
-        function saveInfo() {
-            let info = document.getElementById("infoInput").value;
-            let feeling = document.getElementById("feelingInput").value;
-            if (info.trim() !== "" && feeling.trim() !== "") {
-                let infoData = {
-                    cause: info,
-                    feeling: feeling
-                };
-                localStorage.setItem("infoData", JSON.stringify(infoData));
-                alert("Information saved!");
-                document.getElementById("infoInput").value = "";
-                document.getElementById("feelingInput").value = "";
-            }
-        }
-
-        function showLogData() {
-            let infoLogs = document.getElementById("infoLogs");
-            infoLogs.innerHTML = "";
-            let infoData = JSON.parse(localStorage.getItem("infoData"));
-            if (infoData) {
-                let logEntry = document.createElement("p");
-                logEntry.innerText = `Cause: ${infoData.cause}\nFeeling: ${infoData.feeling}`;
-                infoLogs.appendChild(logEntry);
-            } else {
-                infoLogs.innerText = "No logs available.";
-            }
-        }
-
         function sendMessage() {
-            let input = document.getElementById("chatInput").value.toLowerCase();
+            let input = document.getElementById("chatInput").value;
             let chatBox = document.getElementById("chatHistory");
-            
             if (input.trim() !== "") {
                 let message = document.createElement("p");
                 message.innerText = "You: " + input;
                 chatBox.appendChild(message);
                 
-                let response;
+                let response = getBotResponse(input);
+                let responseMessage = document.createElement("p");
+                responseMessage.innerText = "Bot: " + response;
+                chatBox.appendChild(responseMessage);
                 
+                document.getElementById("chatInput").value = "";
+            }
+        }
+
+        function getBotResponse(input) {
                 if (input.includes("hello") || input.includes("hi")) {
                     response = "Hello! How are you feeling today?";
                 } else if (input.includes("stress") || input.includes("anxiety")) {
@@ -297,13 +144,22 @@
                     response = "Thank you for sharing this information. Is there something else you'd like to talk about?";
                 }
 
+        function activateCalmMode() {
+            alert("Starting a calming breathing exercise. Inhale for 4 seconds, hold for 4, exhale for 6.");
+        }
 
-                let botMessage = document.createElement("p");
-                botMessage.innerText = "Bot: " + response;
-                chatBox.appendChild(botMessage);
-                
-                document.getElementById("chatInput").value = "";
-            }
+        function playMusic() {
+            let audio = new Audio("calm_music.mp3");
+            audio.play();
+        }
+
+        function stopMusic() {
+            let audio = new Audio("calm_music.mp3");
+            audio.pause();
+        }
+
+        function showSupport() {
+            window.location.href = "https://mootube10.github.io/Cyberfusion/";
         }
     </script>
 </body>
