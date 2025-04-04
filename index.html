@@ -120,21 +120,20 @@
     <div class="menu-btn" onclick="openSidebar()">☰</div>
     <div id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
-        <a href="#">Home</a>
-        <a href="#">Mood Tracker</a>
-        <a href="#">Journal</a>
-        <a href="#">Chatbot</a>
-        <a href="#">Logs</a>
-        <a href="#">Coping Strategies</a>
-        <a href="#">Calm Me Down</a>
-        <a href="#" onclick="startMiniGame()">Mini-Games</a>
-        <a href="#">Affirmations</a>
-        <a href="#">Meditation</a>
-        <a href="#">Support</a>
+        <a href="javascript:void(0)" onclick="showHomePage()">Home</a>
+        <a href="javascript:void(0)" onclick="showMoodTracker()">Mood Tracker</a>
+        <a href="javascript:void(0)" onclick="showJournal()">Journal</a>
+        <a href="javascript:void(0)" onclick="showChatbot()">Chatbot</a>
+        <a href="javascript:void(0)" onclick="showLogs()">Logs</a>
+        <a href="javascript:void(0)" onclick="showCopingStrategies()">Coping Strategies</a>
+        <a href="javascript:void(0)" onclick="showCalmMeDown()">Calm Me Down</a>
+        <a href="javascript:void(0)" onclick="startMiniGame()">Mini-Games</a>
+        <a href="javascript:void(0)" onclick="showAffirmations()">Affirmations</a>
+        <a href="javascript:void(0)" onclick="showMeditation()">Meditation</a>
         <a href="https://mootube10.github.io/Cyberfusion/" target="_blank">Company Website</a>
     </div>
 
-    <div class="container">
+    <div class="container" id="homePage">
         <h1>Welcome to Serenity Hub 💙</h1>
         <p>Your safe space to breathe, reflect, and feel supported.</p>
 
@@ -143,15 +142,16 @@
         <button class="button" onclick="respondToUser()">Send</button>
         <div class="chat-box" id="chatBox"></div>
 
-        <div class="game-container" id="gameContainer" style="display: none;">
-            <h3>Relaxing Bubble Game 🌸</h3>
-            <p>Click on the floating bubbles to pop them. Relax and enjoy the moment.</p>
-            <div id="score">
-                <p>Bubbles Popped: <span id="bubbleCount">0</span></p>
-            </div>
+        <button class="button" onclick="startMiniGame()">Mini-Games</button>
+    </div>
+
+    <div class="container" id="gameContainer" style="display: none;">
+        <h3>Relaxing Bubble Game 🌸</h3>
+        <p>Click on the floating bubbles to pop them. Relax and enjoy the moment.</p>
+        <div id="score">
+            <p>Bubbles Popped: <span id="bubbleCount">0</span></p>
         </div>
-        
-        <button class="button" onclick="startGame()" style="display: none;" id="gameButton">Start Game</button>
+        <button class="button" onclick="showHomePage()">Back to Home</button>
     </div>
 
     <audio id="popSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
@@ -167,6 +167,17 @@
 
         function closeSidebar() {
             document.getElementById("sidebar").style.width = "0";
+        }
+
+        function showHomePage() {
+            document.getElementById("homePage").style.display = "block";
+            document.getElementById("gameContainer").style.display = "none";
+        }
+
+        function startMiniGame() {
+            document.getElementById("homePage").style.display = "none";
+            document.getElementById("gameContainer").style.display = "block";
+            startGame();
         }
 
         function respondToUser() {
@@ -200,12 +211,6 @@
 
         let bubbleCount = 0;
         let gameInterval;
-
-        function startMiniGame() {
-            document.getElementById("gameContainer").style.display = "block";
-            document.getElementById("gameButton").style.display = "inline-block";
-            document.querySelector(".container").style.display = "none";
-        }
 
         function startGame() {
             bubbleCount = 0;
