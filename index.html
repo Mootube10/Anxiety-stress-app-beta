@@ -48,118 +48,126 @@
             border-radius: 5px;
             margin-top: 10px;
         }
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+        .sidebar a {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        .menu-btn {
+            font-size: 30px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 30px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
+    <div class="menu-btn" onclick="openSidebar()">☰</div>
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
+        <a href="#">Home</a>
+        <a href="#">Mood Tracker</a>
+        <a href="#">Journal</a>
+        <a href="#">Chatbot</a>
+        <a href="#">Logs</a>
+        <a href="#">Coping Strategies</a>
+        <a href="#">Calm Me Down</a>
+        <a href="#">Safe Space</a>
+        <a href="#">Mini-Games</a>
+        <a href="#">Affirmations</a>
+        <a href="#">Meditation</a>
+        <a href="#">Support</a>
+        <a href="https://mootube10.github.io/Cyberfusion/" target="_blank">Company Website</a>
+    </div>
+
     <div class="container">
-        <h1>Serenity Hub</h1>
-        
-        <button class="button" onclick="activateCalmMode()">Calm Me Down</button>
+        <h1>Welcome to Serenity Hub 💙</h1>
+        <p>Your safe space to breathe, reflect, and feel supported.</p>
 
-        <h2>Mood Tracker</h2>
-        <input type="range" id="moodRange" min="1" max="10" value="5" oninput="updateMood()">
-        <p id="moodValue">Current Mood: 5/10</p>
-
-        <h2>Daily Journal</h2>
-        <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
-        <button class="button" onclick="saveJournal()">Save Entry</button>
-        
-        <h2>AI Chatbot</h2>
-        <div class="chat-box" id="chatHistory"></div>
-        <input type="text" id="chatInput" placeholder="Type a message...">
-        <button class="button" onclick="sendMessage()">Send</button>
-        
-        <h2>Guided Meditation & Music Therapy</h2>
-        <button class="button" onclick="playMusic()">Play Calming Music</button>
-        <button class="button" onclick="stopMusic()">Stop Music</button>
-        
-        <h2>Emergency Support</h2>
-        <button class="button" onclick="showSupport()">Get Help</button>
+        <h3>Chatbot</h3>
+        <input type="text" id="userInput" placeholder="Ask something...">
+        <button class="button" onclick="respondToUser()">Send</button>
+        <div class="chat-box" id="chatBox"></div>
     </div>
 
     <script>
-        function updateMood() {
-            let mood = document.getElementById("moodRange").value;
-            document.getElementById("moodValue").innerText = "Current Mood: " + mood + "/10";
+        function openSidebar() {
+            document.getElementById("sidebar").style.width = "250px";
         }
 
-        function saveJournal() {
-            let entry = document.getElementById("journalEntry").value;
-            if (entry.trim() !== "") {
-                localStorage.setItem("journal", entry);
-                alert("Journal entry saved!");
-                document.getElementById("journalEntry").value = "";
-            }
+        function closeSidebar() {
+            document.getElementById("sidebar").style.width = "0";
         }
 
-        function sendMessage() {
-            let input = document.getElementById("chatInput").value;
-            let chatBox = document.getElementById("chatHistory");
-            if (input.trim() !== "") {
-                let message = document.createElement("p");
-                message.innerText = "You: " + input;
-                chatBox.appendChild(message);
-                
-                let response = getBotResponse(input);
-                let responseMessage = document.createElement("p");
-                responseMessage.innerText = "Bot: " + response;
-                chatBox.appendChild(responseMessage);
-                
-                document.getElementById("chatInput").value = "";
-            }
-        }
+        function respondToUser() {
+            const input = document.getElementById("userInput").value.toLowerCase();
+            const chatBox = document.getElementById("chatBox");
+            let response = "";
 
-        function getBotResponse(input) {
-                if (input.includes("hello") || input.includes("hi")) {
-                    response = "Hello! How are you feeling today?";
-                } else if (input.includes("stress") || input.includes("anxiety")) {
-                    response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
-                } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
-                    response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
-                } else if (input.includes("sad") || input.includes("depressed")) {
-                    response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
-                } else if (input.includes("nervous") || input.includes("worried")) {
-                    response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
-                } else if (input.includes("strategies")) {
+            if (input.includes("hello") || input.includes("hi")) {
+                response = "Hello! How are you feeling today?";
+            } else if (input.includes("stress") || input.includes("anxiety")) {
+                response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
+            } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
+                response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
+            } else if (input.includes("sad") || input.includes("depressed")) {
+                response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
+            } else if (input.includes("nervous") || input.includes("worried")) {
+                response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
+            } else if (input.includes("happy") || input.includes("good")) {
+                response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
+            } else if (input.includes("thank you")) {
+                response = "You're welcome! I'm always here if you need to talk.";
+            } else if (input.includes("help") || input.includes("assist")) {
+                response = "I'm here to assist. Do you need some coping strategies or resources?";
+            } else if (input.includes("strategies")) {
                 response = "Here are some strategies to manage anxiety:\n\n" + 
-                "1. **Deep Breathing**: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
-                "2. **Progressive Muscle Relaxation**: Slowly tense and then relax each muscle group.\n" +
-                "3. **Mindfulness Meditation**: Focus on the present moment without judgment.\n" +
-                "4. **Journaling**: Write down your thoughts and feelings.\n" +
-                "5. **Exercise**: A short walk or workout can help release endorphins.\n" +
-                "6. **Visualization**: Imagine a peaceful place and focus on the details.\n" +
-                "7. **Grounding Techniques**: Focus on your surroundings to reconnect with reality.\n" +
-                "8. **Self-Compassion**: Be kind to yourself and avoid self-criticism.";
+                "1. Deep Breathing: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
+                "2. Progressive Muscle Relaxation.\n" +
+                "3. Mindfulness Meditation.\n" +
+                "4. Journaling.\n" +
+                "5. Exercise.\n" +
+                "6. Visualization.\n" +
+                "7. Grounding Techniques.\n" +
+                "8. Self-Compassion.";
             } else if (input.includes("resources")) {
-                response = "Here are some resources you might find helpful:\n\n" +
-                "1. **Crisis Text Line**: Text HOME to 741741 for free, 24/7 support.\n" +
-                "2. **National Suicide Prevention Lifeline**: Call 1-800-273-8255.\n" +
-                "3. **Therapists/Clinicians**: Find a licensed professional through Psychology Today.\n" +
-                "4. **Mindful.org**: Learn mindfulness and meditation techniques.\n" +
-                "5. **Headspace App**: Meditation and breathing exercises.\n" +
-                "6. **Calm App**: Stress relief and sleep aid tools.\n" +
-                "7. **BetterHelp**: Online therapy service.\n" +
-                "8. **Local Support Groups**: Join local or online support groups for anxiety.";
+                response = "Here are some resources:\n\n1. Crisis Text Line: Text HOME to 741741\n2. National Suicide Prevention Lifeline: 1-800-273-8255\n3. BetterHelp\n4. Calm App\n5. Headspace App";
+            } else if (input.includes("relax") || input.includes("breathe")) {
+                response = "Let’s do a quick breathing exercise: Breathe in deeply for 4 seconds, hold for 4, and exhale slowly for 4. Repeat 3 times.";
+            } else if (input.includes("alone") || input.includes("isolated")) {
+                response = "I hear you. It's tough to feel alone, but please know there are people who care about you. Reach out to them when you feel ready.";
             } else {
-                    response = "Thank you for sharing this information. Is there something else you'd like to talk about?";
-                }
+                response = "Thank you for sharing this. Is there something else you'd like to talk about?";
+            }
 
-        function activateCalmMode() {
-            alert("Starting a calming breathing exercise. Inhale for 4 seconds, hold for 4, exhale for 6.");
-        }
-
-        function playMusic() {
-            let audio = new Audio("calm_music.mp3");
-            audio.play();
-        }
-
-        function stopMusic() {
-            let audio = new Audio("calm_music.mp3");
-            audio.pause();
-        }
-
-        function showSupport() {
-            window.location.href = "https://mootube10.github.io/Cyberfusion/";
+            chatBox.innerHTML += `<p><strong>You:</strong> ${input}</p><p><strong>AI:</strong> ${response}</p>`;
+            document.getElementById("userInput").value = "";
         }
     </script>
 </body>
