@@ -91,18 +91,18 @@
     <div class="menu-btn" onclick="openSidebar()">☰</div>
     <div id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
-        <a href="#">Home</a>
-        <a href="#">Mood Tracker</a>
-        <a href="#">Journal</a>
-        <a href="#">Chatbot</a>
-        <a href="#">Logs</a>
-        <a href="#">Coping Strategies</a>
-        <a href="#">Calm Me Down</a>
-        <a href="#">Safe Space</a>
-        <a href="#">Mini-Games</a>
-        <a href="#">Affirmations</a>
-        <a href="#">Meditation</a>
-        <a href="#">Support</a>
+        <a href="#" onclick="showHome()">Home</a>
+        <a href="#" onclick="showMoodTracker()">Mood Tracker</a>
+        <a href="#" onclick="showJournal()">Journal</a>
+        <a href="#" onclick="showChatbot()">Chatbot</a>
+        <a href="#" onclick="showLogs()">Logs</a>
+        <a href="#" onclick="showCopingStrategies()">Coping Strategies</a>
+        <a href="#" onclick="showCalmMeDown()">Calm Me Down</a>
+        <a href="#" onclick="showSafeSpace()">Safe Space</a>
+        <a href="#" onclick="showMiniGames()">Mini-Games</a>
+        <a href="#" onclick="showAffirmations()">Affirmations</a>
+        <a href="#" onclick="showMeditation()">Meditation</a>
+        <a href="#" onclick="showSupport()">Support</a>
         <a href="https://mootube10.github.io/Cyberfusion/" target="_blank">Company Website</a>
     </div>
 
@@ -110,10 +110,13 @@
         <h1>Welcome to Serenity Hub 💙</h1>
         <p>Your safe space to breathe, reflect, and feel supported.</p>
 
-        <h3>Chatbot</h3>
-        <input type="text" id="userInput" placeholder="Ask something...">
-        <button class="button" onclick="respondToUser()">Send</button>
-        <div class="chat-box" id="chatBox"></div>
+        <div id="content">
+            <!-- Content will change based on the section selected -->
+            <h3>Chatbot</h3>
+            <input type="text" id="userInput" placeholder="Ask something...">
+            <button class="button" onclick="respondToUser()">Send</button>
+            <div class="chat-box" id="chatBox"></div>
+        </div>
     </div>
 
     <script>
@@ -123,6 +126,102 @@
 
         function closeSidebar() {
             document.getElementById("sidebar").style.width = "0";
+        }
+
+        function showHome() {
+            document.getElementById("content").innerHTML = `
+                <h3>Welcome Back!</h3>
+                <p>Your safe space to breathe, reflect, and feel supported. Use the menu to navigate through the app.</p>
+            `;
+        }
+
+        function showMoodTracker() {
+            document.getElementById("content").innerHTML = `
+                <h3>Mood Tracker</h3>
+                <textarea placeholder="How are you feeling today?" rows="4"></textarea>
+                <button class="button">Log Mood</button>
+            `;
+        }
+
+        function showJournal() {
+            document.getElementById("content").innerHTML = `
+                <h3>Journal</h3>
+                <textarea placeholder="Write your thoughts here..." rows="6"></textarea>
+                <button class="button">Save Entry</button>
+            `;
+        }
+
+        function showChatbot() {
+            document.getElementById("content").innerHTML = `
+                <h3>Chatbot</h3>
+                <input type="text" id="userInput" placeholder="Ask something...">
+                <button class="button" onclick="respondToUser()">Send</button>
+                <div class="chat-box" id="chatBox"></div>
+            `;
+        }
+
+        function showLogs() {
+            document.getElementById("content").innerHTML = `
+                <h3>Logs</h3>
+                <p>Here are the logs you have submitted:</p>
+                <!-- Logs will appear here -->
+            `;
+        }
+
+        function showCopingStrategies() {
+            document.getElementById("content").innerHTML = `
+                <h3>Coping Strategies</h3>
+                <ul>
+                    <li>Deep Breathing: Inhale for 4 seconds, hold for 4, exhale for 4.</li>
+                    <li>Progressive Muscle Relaxation.</li>
+                    <li>Mindfulness Meditation.</li>
+                    <li>Journaling.</li>
+                    <li>Exercise.</li>
+                </ul>
+            `;
+        }
+
+        function showCalmMeDown() {
+            document.getElementById("content").innerHTML = `
+                <h3>Calm Me Down</h3>
+                <button class="button">Start Breathing Exercise</button>
+                <p>Relax with guided deep breathing...</p>
+            `;
+        }
+
+        function showSafeSpace() {
+            document.getElementById("content").innerHTML = `
+                <h3>Safe Space</h3>
+                <p>Create your personalized safe space.</p>
+            `;
+        }
+
+        function showMiniGames() {
+            document.getElementById("content").innerHTML = `
+                <h3>Mini-Games</h3>
+                <p>Enjoy relaxing games that help you release stress.</p>
+            `;
+        }
+
+        function showAffirmations() {
+            document.getElementById("content").innerHTML = `
+                <h3>Affirmations</h3>
+                <p>Feel free to read positive affirmations.</p>
+            `;
+        }
+
+        function showMeditation() {
+            document.getElementById("content").innerHTML = `
+                <h3>Meditation</h3>
+                <p>Relax with guided meditation sessions.</p>
+            `;
+        }
+
+        function showSupport() {
+            document.getElementById("content").innerHTML = `
+                <h3>Support</h3>
+                <p>If you need help, please reach out to our support team.</p>
+            `;
         }
 
         function respondToUser() {
@@ -159,14 +258,15 @@
             } else if (input.includes("resources")) {
                 response = "Here are some resources:\n\n1. Crisis Text Line: Text HOME to 741741\n2. National Suicide Prevention Lifeline: 1-800-273-8255\n3. BetterHelp\n4. Calm App\n5. Headspace App";
             } else if (input.includes("relax") || input.includes("breathe")) {
-                response = "Let’s do a quick breathing exercise: Breathe in deeply for 4 seconds, hold for 4, and exhale slowly for 4. Repeat 3 times.";
-            } else if (input.includes("alone") || input.includes("isolated")) {
-                response = "I hear you. It's tough to feel alone, but please know there are people who care about you. Reach out to them when you feel ready.";
+                response = "Let’s do a quick breathing exercise: Breathe in deeply for 4 seconds, hold for 4, and exhale slowly for 4.";
             } else {
-                response = "Thank you for sharing this. Is there something else you'd like to talk about?";
+                response = "I'm sorry, I didn't understand that. Can you ask something else?";
             }
 
-            chatBox.innerHTML += `<p><strong>You:</strong> ${input}</p><p><strong>AI:</strong> ${response}</p>`;
+            // Add user input and response to chat box
+            chatBox.innerHTML += `<div><b>You:</b> ${input}</div>`;
+            chatBox.innerHTML += `<div><b>Bot:</b> ${response}</div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
             document.getElementById("userInput").value = "";
         }
     </script>
