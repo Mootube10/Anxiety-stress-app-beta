@@ -88,30 +88,31 @@
         .game-container {
             position: relative;
             width: 100%;
-            height: 300px;
+            height: 400px;
             background-color: #333;
             overflow: hidden;
+            border-radius: 10px;
         }
-        .ball {
+        .bubble {
             position: absolute;
             background-color: #ff6347;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            top: -30px;
-        }
-        .player {
-            position: absolute;
-            background-color: #00f2fe;
             width: 50px;
             height: 50px;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
+            border-radius: 50%;
+            animation: float 4s infinite ease-in;
+            cursor: pointer;
         }
-        #breathingCountdown {
-            font-size: 24px;
-            margin-top: 20px;
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-100%);
+            }
+        }
+        #score {
+            font-size: 20px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -119,18 +120,17 @@
     <div class="menu-btn" onclick="openSidebar()">☰</div>
     <div id="sidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
-        <a href="#" onclick="showHome()">Home</a>
-        <a href="#" onclick="showMoodTracker()">Mood Tracker</a>
-        <a href="#" onclick="showJournal()">Journal</a>
-        <a href="#" onclick="showChatbot()">Chatbot</a>
-        <a href="#" onclick="showLogs()">Logs</a>
-        <a href="#" onclick="showCopingStrategies()">Coping Strategies</a>
-        <a href="#" onclick="showCalmMeDown()">Calm Me Down</a>
-        <a href="#" onclick="showSafeSpace()">Safe Space</a>
-        <a href="#" onclick="showMiniGames()">Mini-Games</a>
-        <a href="#" onclick="showAffirmations()">Affirmations</a>
-        <a href="#" onclick="showMeditation()">Meditation</a>
-        <a href="#" onclick="showSupport()">Support</a>
+        <a href="#">Home</a>
+        <a href="#">Mood Tracker</a>
+        <a href="#">Journal</a>
+        <a href="#">Chatbot</a>
+        <a href="#">Logs</a>
+        <a href="#">Coping Strategies</a>
+        <a href="#">Calm Me Down</a>
+        <a href="#" onclick="startMiniGame()">Mini-Games</a>
+        <a href="#">Affirmations</a>
+        <a href="#">Meditation</a>
+        <a href="#">Support</a>
         <a href="https://mootube10.github.io/Cyberfusion/" target="_blank">Company Website</a>
     </div>
 
@@ -138,207 +138,35 @@
         <h1>Welcome to Serenity Hub 💙</h1>
         <p>Your safe space to breathe, reflect, and feel supported.</p>
 
-        <div id="content">
-            <!-- Content will change based on the section selected -->
-            <h3>Chatbot</h3>
-            <input type="text" id="userInput" placeholder="Ask something...">
-            <button class="button" onclick="respondToUser()">Send</button>
-            <div class="chat-box" id="chatBox"></div>
+        <h3>Chatbot</h3>
+        <input type="text" id="userInput" placeholder="Ask something...">
+        <button class="button" onclick="respondToUser()">Send</button>
+        <div class="chat-box" id="chatBox"></div>
+
+        <div class="game-container" id="gameContainer" style="display: none;">
+            <h3>Relaxing Bubble Game 🌸</h3>
+            <p>Click on the floating bubbles to pop them. Relax and enjoy the moment.</p>
+            <div id="score">
+                <p>Bubbles Popped: <span id="bubbleCount">0</span></p>
+            </div>
         </div>
+        
+        <button class="button" onclick="startGame()" style="display: none;" id="gameButton">Start Game</button>
     </div>
 
-    <script>
-        let gameInterval;
-        let countdownTimer;
+    <audio id="popSound" src="https://www.soundjay.com/button/beep-07.wav" preload="auto"></audio>
+    <audio id="backgroundMusic" loop autoplay>
+        <source src="https://www.bensound.com/bensound-music/bensound-ukulele.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
 
+    <script>
         function openSidebar() {
             document.getElementById("sidebar").style.width = "250px";
         }
 
         function closeSidebar() {
             document.getElementById("sidebar").style.width = "0";
-        }
-
-        function showHome() {
-            document.getElementById("content").innerHTML = `
-                <h3>Welcome Back!</h3>
-                <p>Your safe space to breathe, reflect, and feel supported. Use the menu to navigate through the app.</p>
-            `;
-        }
-
-        function showMoodTracker() {
-            document.getElementById("content").innerHTML = `
-                <h3>Mood Tracker</h3>
-                <textarea placeholder="How are you feeling today?" rows="4"></textarea>
-                <button class="button">Log Mood</button>
-            `;
-        }
-
-        function showJournal() {
-            document.getElementById("content").innerHTML = `
-                <h3>Journal</h3>
-                <textarea placeholder="Write your thoughts here..." rows="6"></textarea>
-                <button class="button">Save Entry</button>
-            `;
-        }
-
-        function showChatbot() {
-            document.getElementById("content").innerHTML = `
-                <h3>Chatbot</h3>
-                <input type="text" id="userInput" placeholder="Ask something...">
-                <button class="button" onclick="respondToUser()">Send</button>
-                <div class="chat-box" id="chatBox"></div>
-            `;
-        }
-
-        function showLogs() {
-            document.getElementById("content").innerHTML = `
-                <h3>Logs</h3>
-                <p>Here are the logs you have submitted:</p>
-                <!-- Logs will appear here -->
-            `;
-        }
-
-        function showCopingStrategies() {
-            document.getElementById("content").innerHTML = `
-                <h3>Coping Strategies</h3>
-                <ul>
-                    <li>Deep Breathing: Inhale for 4 seconds, hold for 4, exhale for 4.</li>
-                    <li>Progressive Muscle Relaxation.</li>
-                    <li>Mindfulness Meditation.</li>
-                    <li>Journaling.</li>
-                    <li>Exercise.</li>
-                </ul>
-            `;
-        }
-
-        function showCalmMeDown() {
-            document.getElementById("content").innerHTML = `
-                <h3>Calm Me Down</h3>
-                <button class="button" onclick="startBreathingExercise()">Start Breathing Exercise</button>
-                <p id="breathingCountdown"></p>
-            `;
-        }
-
-        function startBreathingExercise() {
-            let countdown = 5;
-            document.getElementById("breathingCountdown").innerText = `Starting in ${countdown}...`;
-
-            countdownTimer = setInterval(function() {
-                countdown--;
-                document.getElementById("breathingCountdown").innerText = `Starting in ${countdown}...`;
-                if (countdown === 0) {
-                    clearInterval(countdownTimer);
-                    startExercise();
-                }
-            }, 1000);
-        }
-
-        function startExercise() {
-            let count = 3;
-            let breathCountdown = setInterval(function() {
-                if (count > 0) {
-                    document.getElementById("breathingCountdown").innerText = `Breathe in... ${count}`;
-                } else if (count === 0) {
-                    document.getElementById("breathingCountdown").innerText = "Hold... Breathe in deeply!";
-                } else if (count === -1) {
-                    document.getElementById("breathingCountdown").innerText = "Exhale slowly...";
-                    clearInterval(breathCountdown);
-                    setTimeout(() => {
-                        document.getElementById("breathingCountdown").innerText = "You did great!";
-                    }, 2000);
-                }
-                count--;
-            }, 2000);
-        }
-
-        function showSafeSpace() {
-            document.getElementById("content").innerHTML = `
-                <h3>Safe Space</h3>
-                <p>Create your personalized safe space.</p>
-            `;
-        }
-
-        function showMiniGames() {
-            document.getElementById("content").innerHTML = `
-                <h3>Mini-Games</h3>
-                <div class="game-container" id="gameContainer">
-                    <div class="player" id="player"></div>
-                </div>
-                <button class="button" onclick="startGame()">Start Game</button>
-            `;
-        }
-
-        function startGame() {
-            let player = document.getElementById("player");
-            let playerPosition = 250;
-            let gameContainer = document.getElementById("gameContainer");
-
-            let balls = [];
-            let score = 0;
-
-            document.addEventListener("keydown", function(event) {
-                if (event.key === "ArrowLeft") {
-                    playerPosition -= 10;
-                } else if (event.key === "ArrowRight") {
-                    playerPosition += 10;
-                }
-                player.style.left = `${playerPosition}px`;
-            });
-
-            gameInterval = setInterval(function() {
-                let ball = document.createElement("div");
-                ball.classList.add("ball");
-                ball.style.left = `${Math.random() * 100}%`;
-                gameContainer.appendChild(ball);
-                balls.push(ball);
-            }, 1000);
-
-            setInterval(function() {
-                balls.forEach((ball, index) => {
-                    let ballRect = ball.getBoundingClientRect();
-                    let playerRect = player.getBoundingClientRect();
-
-                    if (ballRect.top > 300) {
-                        ball.remove();
-                        balls.splice(index, 1);
-                    }
-
-                    if (ballRect.bottom >= playerRect.top && ballRect.left < playerRect.right && ballRect.right > playerRect.left) {
-                        ball.remove();
-                        balls.splice(index, 1);
-                        score++;
-                    }
-
-                });
-            }, 100);
-        }
-
-        function showAffirmations() {
-            document.getElementById("content").innerHTML = `
-                <h3>Affirmations</h3>
-                <p>Feel free to read positive affirmations.</p>
-                <ul>
-                    <li>I am capable and strong.</li>
-                    <li>I am deserving of peace and happiness.</li>
-                    <li>I will get through this.</li>
-                    <li>I trust myself to handle challenges.</li>
-                </ul>
-            `;
-        }
-
-        function showMeditation() {
-            document.getElementById("content").innerHTML = `
-                <h3>Meditation</h3>
-                <p>Relax with guided meditation sessions.</p>
-            `;
-        }
-
-        function showSupport() {
-            document.getElementById("content").innerHTML = `
-                <h3>Support</h3>
-                <p>If you need help, please reach out to our support team.</p>
-            `;
         }
 
         function respondToUser() {
@@ -362,29 +190,63 @@
                 response = "You're welcome! I'm always here if you need to talk.";
             } else if (input.includes("help") || input.includes("assist")) {
                 response = "I'm here to assist. Do you need some coping strategies or resources?";
-            } else if (input.includes("strategies")) {
-                response = "Here are some strategies to manage anxiety:\n\n" + 
-                "1. Deep Breathing: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
-                "2. Progressive Muscle Relaxation.\n" +
-                "3. Mindfulness Meditation.\n" +
-                "4. Journaling.\n" +
-                "5. Exercise.\n" +
-                "6. Visualization.\n" +
-                "7. Grounding Techniques.\n" +
-                "8. Self-Compassion.";
-            } else if (input.includes("resources")) {
-                response = "Here are some resources:\n\n1. National Helpline: 1-800-273-TALK\n" +
-                "2. Local mental health services.\n" +
-                "3. Free online therapy services.";
             } else {
-                response = "I'm sorry, I didn't understand that. Can you ask something else?";
+                response = "Thank you for sharing this. Is there something else you'd like to talk about?";
             }
 
-            // Add user input and response to chat box
-            chatBox.innerHTML += `<div><b>You:</b> ${input}</div>`;
-            chatBox.innerHTML += `<div><b>Bot:</b> ${response}</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.innerHTML += `<p><strong>You:</strong> ${input}</p><p><strong>AI:</strong> ${response}</p>`;
             document.getElementById("userInput").value = "";
+        }
+
+        let bubbleCount = 0;
+        let gameInterval;
+
+        function startMiniGame() {
+            document.getElementById("gameContainer").style.display = "block";
+            document.getElementById("gameButton").style.display = "inline-block";
+            document.querySelector(".container").style.display = "none";
+        }
+
+        function startGame() {
+            bubbleCount = 0;
+            document.getElementById("bubbleCount").innerText = bubbleCount;
+
+            const gameContainer = document.getElementById("gameContainer");
+
+            // Clear any previous bubbles
+            gameContainer.innerHTML = "";
+
+            gameInterval = setInterval(createBubble, 2000); // Create a new bubble every 2 seconds
+        }
+
+        function createBubble() {
+            const gameContainer = document.getElementById("gameContainer");
+            const bubble = document.createElement("div");
+
+            bubble.classList.add("bubble");
+            bubble.style.left = `${Math.random() * (gameContainer.offsetWidth - 50)}px`; // Random position
+            bubble.style.animationDuration = `${Math.random() * 2 + 3}s`; // Random float speed
+
+            bubble.addEventListener("click", function () {
+                popBubble(bubble);
+            });
+
+            gameContainer.appendChild(bubble);
+        }
+
+        function popBubble(bubble) {
+            const popSound = document.getElementById("popSound");
+            popSound.play(); // Play the bubble pop sound
+
+            bubble.style.backgroundColor = "#ffd700"; // Change bubble color on pop
+            bubble.style.transform = "scale(1.5)"; // Slightly enlarge the bubble
+
+            bubbleCount++;
+            document.getElementById("bubbleCount").innerText = bubbleCount;
+
+            setTimeout(function () {
+                bubble.remove(); // Remove the bubble after a short delay
+            }, 200);
         }
     </script>
 </body>
