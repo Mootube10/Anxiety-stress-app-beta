@@ -116,12 +116,13 @@
   <div id="home" class="container">
     <h1>Welcome to Serenity Hub 💙</h1>
     <p>Your safe space to breathe, reflect, and feel supported.</p>
+    <div id="chatPreview"></div>
   </div>
 
   <div id="chatbot" class="container hidden">
     <h2>Chatbot</h2>
     <input type="text" id="userInput" placeholder="Ask something...">
-    <button class="button" onclick="respondToUser()">Send</button>
+    <button class="button" onclick="respondToUser(true)">Send</button>
     <div id="chatBox"></div>
   </div>
 
@@ -157,7 +158,9 @@
       document.getElementById(id).classList.remove("hidden");
     }
 
-    function respondToUser() {
+    const chatHistory = [];
+
+    function respondToUser(fromChatbot = false) {
       const input = document.getElementById("userInput").value.toLowerCase();
       const chatBox = document.getElementById("chatBox");
       let response = "I’m here to listen. Could you tell me more?";
@@ -196,6 +199,16 @@
 
       chatBox.innerHTML += `<p><strong>You:</strong> ${input}</p><p><strong>AI:</strong> ${response}</p>`;
       document.getElementById("userInput").value = "";
+      chatHistory.push({ input, response });
+
+      if (fromChatbot) updateChatPreview();
+    }
+
+    function updateChatPreview() {
+      const preview = document.getElementById("chatPreview");
+      if (!chatHistory.length) return;
+      const last = chatHistory[chatHistory.length - 1];
+      preview.innerHTML = `<p><strong>Chatbot says:</strong> ${last.response}</p>`;
     }
 
     function startBreathing() {
