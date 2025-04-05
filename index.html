@@ -93,13 +93,6 @@
       position: absolute;
       cursor: pointer;
     }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      border-radius: 5px;
-      border: none;
-      margin-bottom: 10px;
-    }
   </style>
 </head>
 <body>
@@ -126,38 +119,6 @@
     <div id="chatPreview"></div>
   </div>
 
-  <div id="tracker" class="container hidden">
-    <h2>Mood Tracker</h2>
-    <input type="text" placeholder="How are you feeling today?" />
-    <button class="button">Save Mood</button>
-  </div>
-
-  <div id="journal" class="container hidden">
-    <h2>Journal Entry</h2>
-    <textarea placeholder="Write your thoughts here..." rows="6"></textarea>
-    <button class="button">Save Entry</button>
-  </div>
-
-  <div id="coping" class="container hidden">
-    <h2>Coping Strategies</h2>
-    <p>Here you'll soon find personalized strategies to manage your anxiety.</p>
-  </div>
-
-  <div id="safe" class="container hidden">
-    <h2>Safe Space</h2>
-    <p>Imagine your happy place. Breathe in calm, breathe out stress.</p>
-  </div>
-
-  <div id="affirmations" class="container hidden">
-    <h2>Daily Affirmations</h2>
-    <p>You are strong. You are capable. You are not alone.</p>
-  </div>
-
-  <div id="meditation" class="container hidden">
-    <h2>Guided Meditation</h2>
-    <p>Sit back, relax, and follow a soothing audio track (Coming Soon).</p>
-  </div>
-
   <div id="chatbot" class="container hidden">
     <h2>Chatbot</h2>
     <input type="text" id="userInput" placeholder="Ask something...">
@@ -167,8 +128,7 @@
 
   <div id="logs" class="container hidden">
     <h2>Your Logs</h2>
-    <textarea placeholder="Log your anxiety episode or progress..." rows="4"></textarea>
-    <button class="button">Save Log</button>
+    <p>You can write and review your personal logs here soon!</p>
   </div>
 
   <div id="calm" class="container hidden">
@@ -181,6 +141,12 @@
     <h2>Bubble Pop Game</h2>
     <p>Pop the bubbles to relax 🌊</p>
     <div id="gameCanvas"></div>
+  </div>
+
+  <div id="meditation" class="container hidden">
+    <h2>Guided Meditation</h2>
+    <p>Take a moment to relax and breathe.</p>
+    <audio id="meditationAudio" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f11966e3c8.mp3?filename=relaxing-music-11750.mp3"></audio>
   </div>
 
   <script>
@@ -196,6 +162,11 @@
       const sections = document.querySelectorAll(".container");
       sections.forEach(section => section.classList.add("hidden"));
       document.getElementById(id).classList.remove("hidden");
+      if (id === 'meditation') {
+        const audio = document.getElementById("meditationAudio");
+        audio.volume = 0.5;
+        audio.play();
+      }
     }
 
     const chatHistory = [];
