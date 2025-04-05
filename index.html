@@ -119,6 +119,16 @@
     <div id="chatPreview"></div>
   </div>
 
+  <div id="tracker" class="container hidden">
+    <h2>Mood Tracker</h2>
+    <input type="text" placeholder="How are you feeling today?" />
+  </div>
+
+  <div id="journal" class="container hidden">
+    <h2>Journal</h2>
+    <textarea placeholder="Write your thoughts here..." rows="6" style="width:100%;"></textarea>
+  </div>
+
   <div id="chatbot" class="container hidden">
     <h2>Chatbot</h2>
     <input type="text" id="userInput" placeholder="Ask something...">
@@ -128,7 +138,13 @@
 
   <div id="logs" class="container hidden">
     <h2>Your Logs</h2>
-    <p>You can write and review your personal logs here soon!</p>
+    <input type="text" placeholder="Log Title">
+    <textarea placeholder="Describe your experience..." rows="5" style="width:100%;"></textarea>
+  </div>
+
+  <div id="coping" class="container hidden">
+    <h2>Coping Strategies</h2>
+    <input type="text" placeholder="What do you need help with?" />
   </div>
 
   <div id="calm" class="container hidden">
@@ -143,10 +159,15 @@
     <div id="gameCanvas"></div>
   </div>
 
+  <div id="affirmations" class="container hidden">
+    <h2>Daily Affirmations</h2>
+    <textarea placeholder="Write or read your affirmations here..." rows="4" style="width:100%;"></textarea>
+  </div>
+
   <div id="meditation" class="container hidden">
     <h2>Guided Meditation</h2>
     <p>Take a moment to relax and breathe.</p>
-    <audio id="meditationAudio" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f11966e3c8.mp3?filename=relaxing-music-11750.mp3"></audio>
+    <audio id="meditationAudio" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f11966e3c8.mp3?filename=relaxing-music-11750.mp3" autoplay loop></audio>
   </div>
 
   <script>
@@ -164,8 +185,11 @@
       document.getElementById(id).classList.remove("hidden");
       if (id === 'meditation') {
         const audio = document.getElementById("meditationAudio");
-        audio.volume = 0.5;
-        audio.play();
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      } else {
+        const audio = document.getElementById("meditationAudio");
+        if (audio) audio.pause();
       }
     }
 
