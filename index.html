@@ -119,10 +119,20 @@
     <div id="chatPreview"></div>
   </div>
 
-  <div id="tracker" class="container hidden">
-    <h2>Mood Tracker</h2>
-    <input type="text" placeholder="How are you feeling today?" />
+<div id="tracker" class="container hidden">
+  <h2>Mood Tracker</h2>
+  <p>How are you feeling today?</p>
+  <div>
+    <button class="button" onclick="logMood('😊 Happy')">😊 Happy</button>
+    <button class="button" onclick="logMood('😔 Sad')">😔 Sad</button>
+    <button class="button" onclick="logMood('😡 Angry')">😡 Angry</button>
+    <button class="button" onclick="logMood('😰 Anxious')">😰 Anxious</button>
+    <button class="button" onclick="logMood('😴 Tired')">😴 Tired</button>
   </div>
+  <h3>Your Mood History:</h3>
+  <ul id="moodHistory" style="list-style: none; padding-left: 0;"></ul>
+</div>
+
 
   <div id="journal" class="container hidden">
     <h2>Journal</h2>
