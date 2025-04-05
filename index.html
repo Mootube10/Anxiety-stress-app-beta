@@ -14,9 +14,13 @@
     .menu-btn {
       font-size: 30px;
       cursor: pointer;
-      position: absolute;
+      position: fixed;
       top: 10px;
       left: 20px;
+      z-index: 9999;
+      background-color: rgba(0, 0, 0, 0.3);
+      padding: 5px 10px;
+      border-radius: 5px;
     }
     .sidebar {
       height: 100%;
@@ -121,6 +125,11 @@
     <div id="chatBox"></div>
   </div>
 
+  <div id="logs" class="container hidden">
+    <h2>Your Logs</h2>
+    <p>You can write and review your personal logs here soon!</p>
+  </div>
+
   <div id="calm" class="container hidden">
     <h2>Breathing Exercise</h2>
     <button class="button" onclick="startBreathing()">Start Breathing Exercise</button>
@@ -153,39 +162,37 @@
       const chatBox = document.getElementById("chatBox");
       let response = "I’m here to listen. Could you tell me more?";
 
-            if (input.includes("hello") || input.includes("hi")) {
-                response = "Hello! How are you feeling today?";
-            } else if (input.includes("stress") || input.includes("anxiety")) {
-                response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
-            } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
-                response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
-            } else if (input.includes("sad") || input.includes("depressed")) {
-                response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
-            } else if (input.includes("nervous") || input.includes("worried")) {
-                response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
-            } else if (input.includes("happy") || input.includes("good")) {
-                response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
-            } else if (input.includes("thank you")) {
-                response = "You're welcome! I'm always here if you need to talk.";
-            } else if (input.includes("help") || input.includes("assist")) {
-                response = "I'm here to assist. Do you need some coping strategies or resources?";
-            } else if (input.includes("strategies")) {
-                response = "Here are some strategies to manage anxiety:\n\n" + 
-                "1. Deep Breathing: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
-                "2. Progressive Muscle Relaxation.\n" +
-                "3. Mindfulness Meditation.\n" +
-                "4. Journaling.\n" +
-                "5. Exercise.\n" +
-                "6. Visualization.\n" +
-                "7. Grounding Techniques.\n" +
-                "8. Self-Compassion.";
-            } else if (input.includes("resources")) {
-                response = "Here are some resources:\n\n1. National Helpline: 1-800-273-TALK\n" +
-                "2. Local mental health services.\n" +
-                "3. Free online therapy services.";
-            } else {
-                response = "I'm sorry, I didn't understand that. Can you ask something else?";
-
+      if (input.includes("hello") || input.includes("hi")) {
+        response = "Hello! How are you feeling today?";
+      } else if (input.includes("stress") || input.includes("anxiety")) {
+        response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
+      } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
+        response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
+      } else if (input.includes("sad") || input.includes("depressed")) {
+        response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
+      } else if (input.includes("nervous") || input.includes("worried")) {
+        response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
+      } else if (input.includes("happy") || input.includes("good")) {
+        response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
+      } else if (input.includes("thank you")) {
+        response = "You're welcome! I'm always here if you need to talk.";
+      } else if (input.includes("help") || input.includes("assist")) {
+        response = "I'm here to assist. Do you need some coping strategies or resources?";
+      } else if (input.includes("strategies")) {
+        response = "Here are some strategies to manage anxiety:\n\n" + 
+        "1. Deep Breathing: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
+        "2. Progressive Muscle Relaxation.\n" +
+        "3. Mindfulness Meditation.\n" +
+        "4. Journaling.\n" +
+        "5. Exercise.\n" +
+        "6. Visualization.\n" +
+        "7. Grounding Techniques.\n" +
+        "8. Self-Compassion.";
+      } else if (input.includes("resources")) {
+        response = "Here are some resources:\n\n1. National Helpline: 1-800-273-TALK\n" +
+        "2. Local mental health services.\n" +
+        "3. Free online therapy services.";
+      }
 
       chatBox.innerHTML += `<p><strong>You:</strong> ${input}</p><p><strong>AI:</strong> ${response}</p>`;
       document.getElementById("userInput").value = "";
@@ -199,6 +206,7 @@
         "Great job! Feel a bit calmer?"
       ];
       let i = 0;
+      guide.textContent = "Starting...";
       const interval = setInterval(() => {
         guide.textContent = steps[i];
         i++;
