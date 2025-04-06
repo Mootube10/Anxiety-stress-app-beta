@@ -7,16 +7,44 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
       margin: 0;
       padding: 0;
       color: #333;
     }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 200px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      display: none;
+      flex-direction: column;
+      z-index: 1000;
+    }
+    .sidebar button {
+      margin: 10px 0;
+      width: 100%;
+    }
+    #menuButton {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
     .container {
       padding: 20px;
       text-align: center;
-      background: rgba(255, 255, 255, 0.9);
-      margin: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      margin: 60px 20px 20px 240px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
@@ -51,6 +79,9 @@
     #chatBox {
       background-color: #f0f8ff;
       border-radius: 8px;
+      padding: 10px;
+      min-height: 200px;
+      border: 1px solid #ccc;
     }
     #chatBox p {
       text-align: left;
@@ -60,183 +91,137 @@
 </head>
 <body>
 
-<audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
+<div id="menuButton" onclick="toggleSidebar()">☰ Menu</div>
 
-<div id="home" class="container">
-  <h1>Welcome to Serenity Hub</h1>
-  <p>Your digital safe space for mental wellness 💖</p>
-  <button class="button" onclick="showSection('chatbot')">Talk to the AI Companion</button>
-  <button class="button" onclick="showSection('tracker')">Track Your Mood</button>
-  <button class="button" onclick="showSection('journal')">Write in Your Journal</button>
-  <button class="button" onclick="showSection('game')">Play a Relaxing Game</button>
-  <button class="button" onclick="showSection('meditation')">Meditation Room</button>
+<div class="sidebar" id="sidebar">
+  <button class="button" onclick="showSection('home')">Home</button>
+  <button class="button" onclick="showSection('chatbot')">AI Companion</button>
+  <button class="button" onclick="showSection('tracker')">Mood Tracker</button>
+  <button class="button" onclick="showSection('journal')">Journal</button>
+  <button class="button" onclick="showSection('game')">Mini Game</button>
+  <button class="button" onclick="showSection('meditation')">Meditation</button>
 </div>
 
+<audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
+
+<div id="home" class="container">Welcome to Serenity Hub 💙</div>
+
 <div id="chatbot" class="container hidden">
-  <h2>AI Companion 🤖</h2>
-  <div id="chatBox" style="min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;"></div>
-  <input type="text" id="userInput" placeholder="Type your message..." />
-  <button class="button" onclick="sendMessage()">Send</button>
-  <button class="button" onclick="showSection('home')">Back to Home</button>
+  <h2>AI Companion</h2>
+  <div id="chatBox"></div>
+  <input type="text" id="chatInput" placeholder="Type your message here...">
+  <button class="button" onclick="sendChat()">Send</button>
 </div>
 
 <div id="tracker" class="container hidden">
-  <h2>Mood Tracker 🧠</h2>
-  <p>How are you feeling today?</p>
-  <input type="text" id="moodInput" placeholder="Describe your current feeling or situation...">
-  <div>
-    <button class="button" onclick="logMood('😊 Happy')">😊 Happy</button>
-    <button class="button" onclick="logMood('😔 Sad')">😔 Sad</button>
-    <button class="button" onclick="logMood('😡 Angry')">😡 Angry</button>
-    <button class="button" onclick="logMood('😰 Anxious')">😰 Anxious</button>
-    <button class="button" onclick="logMood('😴 Tired')">😴 Tired</button>
-  </div>
-  <h3>Your Mood History:</h3>
-  <ul id="moodHistory" style="list-style: none; padding-left: 0;"></ul>
-  <button class="button" onclick="showSection('home')">Back to Home</button>
+  <h2>Mood Tracker</h2>
+  <input type="text" id="moodInput" placeholder="How are you feeling today?">
+  <button class="button" onclick="trackMood()">Submit Mood</button>
+  <div id="moodLog"></div>
 </div>
 
 <div id="journal" class="container hidden">
-  <h2>Your Journal ✍️</h2>
-  <textarea id="journalInput" placeholder="Write your thoughts here..." rows="6"></textarea>
-  <button class="button" onclick="saveJournal()">Save Entry</button>
-  <div id="journalEntries"></div>
-  <button class="button" onclick="showSection('home')">Back to Home</button>
+  <h2>Journal</h2>
+  <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
+  <button class="button" onclick="saveJournal()">Save</button>
 </div>
 
 <div id="game" class="container hidden">
-  <h2>Relaxing Mini-Game 🎮</h2>
-  <p>Click the floating bubbles to pop them. Deep breath in... and pop! 🫧</p>
+  <h2>Relaxing Mini Game</h2>
+  <p>Click the floating bubbles!</p>
   <div id="bubbleGame"></div>
-  <button class="button" onclick="createBubbles()">Start Game</button>
-  <button class="button" onclick="showSection('home')">Back to Home</button>
 </div>
 
 <div id="meditation" class="container hidden">
-  <h2>Guided Meditation 🧘‍♀️</h2>
-  <p>Find a comfortable position, close your eyes, and listen to the calming music.</p>
-  <button class="button" onclick="playMusic()">Start Meditation</button>
-  <button class="button" onclick="pauseMusic()">Pause Music</button>
-  <button class="button" onclick="showSection('home')">Back to Home</button>
+  <h2>Meditation Room</h2>
+  <p>Relax and enjoy the music 🌿</p>
 </div>
 
 <script>
   const music = document.getElementById('backgroundMusic');
+  const sidebar = document.getElementById('sidebar');
+  const chatBox = document.getElementById('chatBox');
+  const moodLog = document.getElementById('moodLog');
+  const bubbleGame = document.getElementById('bubbleGame');
+
+  function toggleSidebar() {
+    sidebar.style.display = sidebar.style.display === 'flex' ? 'none' : 'flex';
+  }
 
   function showSection(sectionId) {
     const sections = document.querySelectorAll('.container');
     sections.forEach(sec => sec.classList.add('hidden'));
     document.getElementById(sectionId).classList.remove('hidden');
-
-    // Background music logic
-    if (sectionId === 'home') {
-      music.volume = 0.3;
+    if (sectionId === 'meditation') {
+      music.volume = 0.4;
       music.play();
     } else {
       music.pause();
     }
   }
 
-  function sendMessage() {
-    const userInput = document.getElementById("userInput");
-    const chatBox = document.getElementById("chatBox");
-    const message = userInput.value.trim();
-    if (message) {
-      const userMessage = `<p><strong>You:</strong> ${message}</p>`;
-      const replyText = getBotResponse(message);
-      const reply = `<p><strong>AI:</strong> ${replyText}</p>`;
-      chatBox.innerHTML += userMessage + reply;
+  function sendChat() {
+    const input = document.getElementById('chatInput');
+    const userText = input.value.trim();
+    if (userText) {
+      const userMsg = document.createElement('p');
+      userMsg.textContent = `You: ${userText}`;
+      chatBox.appendChild(userMsg);
+
+      const response = document.createElement('p');
+      response.textContent = `AI: ${getResponse(userText)}`;
+      chatBox.appendChild(response);
+      input.value = '';
       chatBox.scrollTop = chatBox.scrollHeight;
-      userInput.value = "";
     }
   }
 
-  function getBotResponse(message) {
-    const msg = message.toLowerCase();
-      if (input.includes("hello") || input.includes("hi")) {
-        response = "Hello! How are you feeling today?";
-      } else if (input.includes("stress") || input.includes("anxiety")) {
-        response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
-      } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
-        response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
-      } else if (input.includes("sad") || input.includes("depressed")) {
-        response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
-      } else if (input.includes("nervous") || input.includes("worried")) {
-        response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
-      } else if (input.includes("happy") || input.includes("good")) {
-        response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
-      } else if (input.includes("thank you")) {
-        response = "You're welcome! I'm always here if you need to talk.";
-      } else if (input.includes("help") || input.includes("assist")) {
-        response = "I'm here to assist. Do you need some coping strategies or resources?";
-      } else if (input.includes("strategies")) {
-        response = "Here are some strategies to manage anxiety:\n\n" + 
-        "1. Deep Breathing: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
-        "2. Progressive Muscle Relaxation.\n" +
-        "3. Mindfulness Meditation.\n" +
-        "4. Journaling.\n" +
-        "5. Exercise.\n" +
-        "6. Visualization.\n" +
-        "7. Grounding Techniques.\n" +
-        "8. Self-Compassion.";
-      } else if (input.includes("resources")) {
-        response = "Here are some resources:\n\n1. National Helpline: 1-800-273-TALK\n" +
-        "2. Local mental health services.\n" +
-        "3. Free online therapy services.";
-      }
+  function getResponse(msg) {
+    const responses = [
+      "I'm here for you.",
+      "That sounds tough. Want to talk more about it?",
+      "It's okay to feel this way.",
+      "You're not alone.",
+      "Take a deep breath. You're doing great."
+    ];
+    return responses[Math.floor(Math.random() * responses.length)];
+  }
 
-  function logMood(mood) {
-    const inputDetail = document.getElementById("moodInput").value.trim();
-    const moodHistory = document.getElementById("moodHistory");
-    const li = document.createElement("li");
-    li.textContent = mood + (inputDetail ? ` - ${inputDetail}` : '') + " - " + new Date().toLocaleString();
-    moodHistory.appendChild(li);
-    document.getElementById("moodInput").value = "";
+  function trackMood() {
+    const input = document.getElementById('moodInput');
+    const mood = input.value.trim();
+    if (mood) {
+      const entry = document.createElement('p');
+      entry.textContent = `Mood: ${mood}`;
+      moodLog.appendChild(entry);
+      input.value = '';
+    }
   }
 
   function saveJournal() {
-    const input = document.getElementById("journalInput");
-    const entry = input.value.trim();
-    if (entry) {
-      const container = document.getElementById("journalEntries");
-      const entryDiv = document.createElement("div");
-      entryDiv.textContent = entry + " (" + new Date().toLocaleString() + ")";
-      entryDiv.style.marginTop = "10px";
-      container.appendChild(entryDiv);
-      input.value = "";
+    const journal = document.getElementById('journalEntry');
+    if (journal.value.trim()) {
+      alert('Journal entry saved!');
+      journal.value = '';
     }
   }
 
   function createBubbles() {
-    const container = document.getElementById("bubbleGame");
-    container.innerHTML = "";
-    for (let i = 0; i < 15; i++) {
-      const bubble = document.createElement("div");
-      bubble.textContent = "🫧";
-      bubble.style.fontSize = `${20 + Math.random() * 40}px`;
-      bubble.style.position = "relative";
-      bubble.style.display = "inline-block";
-      bubble.style.margin = "10px";
-      bubble.style.cursor = "pointer";
-      bubble.style.transition = "transform 0.3s ease";
-      bubble.onclick = () => {
-        bubble.style.transform = "scale(1.3) rotate(10deg)";
-        setTimeout(() => bubble.remove(), 150);
-      };
-      container.appendChild(bubble);
+    bubbleGame.innerHTML = '';
+    for (let i = 0; i < 20; i++) {
+      const bubble = document.createElement('div');
+      bubble.style.width = bubble.style.height = '40px';
+      bubble.style.borderRadius = '50%';
+      bubble.style.background = '#add8e6';
+      bubble.style.margin = '10px';
+      bubble.style.cursor = 'pointer';
+      bubble.addEventListener('click', () => bubble.remove());
+      bubbleGame.appendChild(bubble);
     }
   }
 
-  function playMusic() {
-    music.volume = 0.3;
-    music.play();
-  }
-
-  function pauseMusic() {
-    music.pause();
-  }
+  createBubbles();
 </script>
 
 </body>
 </html>
-
