@@ -1,127 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Serenity Hub</title>
   <style>
     body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #a1c4fd, #c2e9fb);
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #4facfe, #00f2fe);
-      color: white;
-    }
-    .menu-btn {
-      font-size: 30px;
-      cursor: pointer;
-      position: fixed;
-      top: 10px;
-      left: 20px;
-      z-index: 9999;
-      background-color: rgba(0, 0, 0, 0.3);
-      padding: 5px 10px;
-      border-radius: 5px;
-    }
-    .sidebar {
-      height: 100%;
-      width: 0;
-      position: fixed;
-      z-index: 1;
-      top: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.9);
-      overflow-x: hidden;
-      transition: 0.5s;
-      padding-top: 60px;
-    }
-    .sidebar a {
-      padding: 10px 15px;
-      text-decoration: none;
-      font-size: 18px;
-      color: white;
-      display: block;
-    }
-    .sidebar a:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-    .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 25px;
-      font-size: 30px;
-      cursor: pointer;
+      padding: 0;
+      color: #333;
     }
     .container {
-      max-width: 600px;
-      margin: 80px auto;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-    }
-    .button {
-      background: #00f2fe;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.9);
+      margin: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .hidden {
       display: none;
     }
-    #chatBox {
-      height: 150px;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.1);
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
-    }
-    #gameCanvas {
-      width: 100%;
-      height: 300px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-      margin-top: 10px;
-      position: relative;
-    }
-    .bubble {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.3);
-      position: absolute;
+    .button {
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
       cursor: pointer;
+      font-size: 16px;
+    }
+    textarea, input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      margin: 10px auto;
+      display: block;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    #bubbleGame {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    #chatBox {
+      background-color: #f0f8ff;
+      border-radius: 8px;
+    }
+    #chatBox p {
+      text-align: left;
+      margin: 6px 0;
     }
   </style>
 </head>
 <body>
-  <div class="menu-btn" onclick="openSidebar()">☰</div>
-  <div id="sidebar" class="sidebar">
-    <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">&times;</a>
-    <a href="#" onclick="switchPage('home')">Home</a>
-    <a href="#" onclick="switchPage('tracker')">Mood Tracker</a>
-    <a href="#" onclick="switchPage('journal')">Journal</a>
-    <a href="#" onclick="switchPage('chatbot')">Chatbot</a>
-    <a href="#" onclick="switchPage('logs')">Logs</a>
-    <a href="#" onclick="switchPage('coping')">Coping Strategies</a>
-    <a href="#" onclick="switchPage('calm')">Calm Me Down</a>
-    <a href="#" onclick="switchPage('safe')">Safe Space</a>
-    <a href="#" onclick="switchPage('minigames')">Mini-Games</a>
-    <a href="#" onclick="switchPage('affirmations')">Affirmations</a>
-    <a href="#" onclick="switchPage('meditation')">Meditation</a>
-    <a href="https://mootube10.github.io/Cyberfusion/" target="_blank">Support</a>
-  </div>
 
-  <div id="home" class="container">
-    <h1>Welcome to Serenity Hub 💙</h1>
-    <p>Your safe space to breathe, reflect, and feel supported.</p>
-    <div id="chatPreview"></div>
-  </div>
+<audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
+
+<div id="home" class="container">
+  <h1>Welcome to Serenity Hub</h1>
+  <p>Your digital safe space for mental wellness 💖</p>
+  <button class="button" onclick="showSection('chatbot')">Talk to the AI Companion</button>
+  <button class="button" onclick="showSection('tracker')">Track Your Mood</button>
+  <button class="button" onclick="showSection('journal')">Write in Your Journal</button>
+  <button class="button" onclick="showSection('game')">Play a Relaxing Game</button>
+  <button class="button" onclick="showSection('meditation')">Meditation Room</button>
+</div>
+
+<div id="chatbot" class="container hidden">
+  <h2>AI Companion 🤖</h2>
+  <div id="chatBox" style="min-height: 200px; margin-bottom: 10px; border: 1px solid #ccc; padding: 10px;"></div>
+  <input type="text" id="userInput" placeholder="Type your message..." />
+  <button class="button" onclick="sendMessage()">Send</button>
+  <button class="button" onclick="showSection('home')">Back to Home</button>
+</div>
 
 <div id="tracker" class="container hidden">
-  <h2>Mood Tracker</h2>
+  <h2>Mood Tracker 🧠</h2>
   <p>How are you feeling today?</p>
+  <input type="text" id="moodInput" placeholder="Describe your current feeling or situation...">
   <div>
     <button class="button" onclick="logMood('😊 Happy')">😊 Happy</button>
     <button class="button" onclick="logMood('😔 Sad')">😔 Sad</button>
@@ -131,85 +93,66 @@
   </div>
   <h3>Your Mood History:</h3>
   <ul id="moodHistory" style="list-style: none; padding-left: 0;"></ul>
+  <button class="button" onclick="showSection('home')">Back to Home</button>
 </div>
 
+<div id="journal" class="container hidden">
+  <h2>Your Journal ✍️</h2>
+  <textarea id="journalInput" placeholder="Write your thoughts here..." rows="6"></textarea>
+  <button class="button" onclick="saveJournal()">Save Entry</button>
+  <div id="journalEntries"></div>
+  <button class="button" onclick="showSection('home')">Back to Home</button>
+</div>
 
-  <div id="journal" class="container hidden">
-    <h2>Journal</h2>
-    <textarea placeholder="Write your thoughts here..." rows="6" style="width:100%;"></textarea>
-  </div>
+<div id="game" class="container hidden">
+  <h2>Relaxing Mini-Game 🎮</h2>
+  <p>Click the floating bubbles to pop them. Deep breath in... and pop! 🫧</p>
+  <div id="bubbleGame"></div>
+  <button class="button" onclick="createBubbles()">Start Game</button>
+  <button class="button" onclick="showSection('home')">Back to Home</button>
+</div>
 
-  <div id="chatbot" class="container hidden">
-    <h2>Chatbot</h2>
-    <input type="text" id="userInput" placeholder="Ask something...">
-    <button class="button" onclick="respondToUser(true)">Send</button>
-    <div id="chatBox"></div>
-  </div>
+<div id="meditation" class="container hidden">
+  <h2>Guided Meditation 🧘‍♀️</h2>
+  <p>Find a comfortable position, close your eyes, and listen to the calming music.</p>
+  <button class="button" onclick="playMusic()">Start Meditation</button>
+  <button class="button" onclick="pauseMusic()">Pause Music</button>
+  <button class="button" onclick="showSection('home')">Back to Home</button>
+</div>
 
-  <div id="logs" class="container hidden">
-    <h2>Your Logs</h2>
-    <input type="text" placeholder="Log Title">
-    <textarea placeholder="Describe your experience..." rows="5" style="width:100%;"></textarea>
-  </div>
+<script>
+  const music = document.getElementById('backgroundMusic');
 
-  <div id="coping" class="container hidden">
-    <h2>Coping Strategies</h2>
-    <input type="text" placeholder="What do you need help with?" />
-  </div>
+  function showSection(sectionId) {
+    const sections = document.querySelectorAll('.container');
+    sections.forEach(sec => sec.classList.add('hidden'));
+    document.getElementById(sectionId).classList.remove('hidden');
 
-  <div id="calm" class="container hidden">
-    <h2>Breathing Exercise</h2>
-    <button class="button" onclick="startBreathing()">Start Breathing Exercise</button>
-    <p id="breathGuide"></p>
-  </div>
-
-  <div id="minigames" class="container hidden">
-    <h2>Bubble Pop Game</h2>
-    <p>Pop the bubbles to relax 🌊</p>
-    <div id="gameCanvas"></div>
-  </div>
-
-  <div id="affirmations" class="container hidden">
-    <h2>Daily Affirmations</h2>
-    <textarea placeholder="Write or read your affirmations here..." rows="4" style="width:100%;"></textarea>
-  </div>
-
-  <div id="meditation" class="container hidden">
-    <h2>Guided Meditation</h2>
-    <p>Take a moment to relax and breathe.</p>
-    <audio id="meditationAudio" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_f11966e3c8.mp3?filename=relaxing-music-11750.mp3" autoplay loop></audio>
-  </div>
-
-  <script>
-    function openSidebar() {
-      document.getElementById("sidebar").style.width = "250px";
+    // Background music logic
+    if (sectionId === 'home') {
+      music.volume = 0.3;
+      music.play();
+    } else {
+      music.pause();
     }
+  }
 
-    function closeSidebar() {
-      document.getElementById("sidebar").style.width = "0";
+  function sendMessage() {
+    const userInput = document.getElementById("userInput");
+    const chatBox = document.getElementById("chatBox");
+    const message = userInput.value.trim();
+    if (message) {
+      const userMessage = `<p><strong>You:</strong> ${message}</p>`;
+      const replyText = getBotResponse(message);
+      const reply = `<p><strong>AI:</strong> ${replyText}</p>`;
+      chatBox.innerHTML += userMessage + reply;
+      chatBox.scrollTop = chatBox.scrollHeight;
+      userInput.value = "";
     }
+  }
 
-    function switchPage(id) {
-      const sections = document.querySelectorAll(".container");
-      sections.forEach(section => section.classList.add("hidden"));
-      document.getElementById(id).classList.remove("hidden");
-      if (id === 'meditation') {
-        const audio = document.getElementById("meditationAudio");
-        audio.currentTime = 0;
-        audio.play().catch(() => {});
-      } else {
-        const audio = document.getElementById("meditationAudio");
-        if (audio) audio.pause();
-      }
-    }
-
-    const chatHistory = [];
-
-    function respondToUser(fromChatbot = false) {
-      const input = document.getElementById("userInput").value.toLowerCase();
-      const chatBox = document.getElementById("chatBox");
-      let response = "I’m here to listen. Could you tell me more?";
-
+  function getBotResponse(message) {
+    const msg = message.toLowerCase();
       if (input.includes("hello") || input.includes("hi")) {
         response = "Hello! How are you feeling today?";
       } else if (input.includes("stress") || input.includes("anxiety")) {
@@ -242,49 +185,58 @@
         "3. Free online therapy services.";
       }
 
-      chatBox.innerHTML += `<p><strong>You:</strong> ${input}</p><p><strong>AI:</strong> ${response}</p>`;
-      document.getElementById("userInput").value = "";
-      chatHistory.push({ input, response });
+  function logMood(mood) {
+    const inputDetail = document.getElementById("moodInput").value.trim();
+    const moodHistory = document.getElementById("moodHistory");
+    const li = document.createElement("li");
+    li.textContent = mood + (inputDetail ? ` - ${inputDetail}` : '') + " - " + new Date().toLocaleString();
+    moodHistory.appendChild(li);
+    document.getElementById("moodInput").value = "";
+  }
 
-      if (fromChatbot) updateChatPreview();
+  function saveJournal() {
+    const input = document.getElementById("journalInput");
+    const entry = input.value.trim();
+    if (entry) {
+      const container = document.getElementById("journalEntries");
+      const entryDiv = document.createElement("div");
+      entryDiv.textContent = entry + " (" + new Date().toLocaleString() + ")";
+      entryDiv.style.marginTop = "10px";
+      container.appendChild(entryDiv);
+      input.value = "";
     }
+  }
 
-    function updateChatPreview() {
-      const preview = document.getElementById("chatPreview");
-      if (!chatHistory.length) return;
-      const last = chatHistory[chatHistory.length - 1];
-      preview.innerHTML = `<p><strong>Chatbot says:</strong> ${last.response}</p>`;
+  function createBubbles() {
+    const container = document.getElementById("bubbleGame");
+    container.innerHTML = "";
+    for (let i = 0; i < 15; i++) {
+      const bubble = document.createElement("div");
+      bubble.textContent = "🫧";
+      bubble.style.fontSize = `${20 + Math.random() * 40}px`;
+      bubble.style.position = "relative";
+      bubble.style.display = "inline-block";
+      bubble.style.margin = "10px";
+      bubble.style.cursor = "pointer";
+      bubble.style.transition = "transform 0.3s ease";
+      bubble.onclick = () => {
+        bubble.style.transform = "scale(1.3) rotate(10deg)";
+        setTimeout(() => bubble.remove(), 150);
+      };
+      container.appendChild(bubble);
     }
+  }
 
-    function startBreathing() {
-      const guide = document.getElementById("breathGuide");
-      const steps = [
-        "Breathe in... 4", "Hold... 4", "Exhale... 6",
-        "Breathe in... 4", "Hold... 4", "Exhale... 6",
-        "Great job! Feel a bit calmer?"
-      ];
-      let i = 0;
-      guide.textContent = "Starting...";
-      const interval = setInterval(() => {
-        guide.textContent = steps[i];
-        i++;
-        if (i >= steps.length) clearInterval(interval);
-      }, 3000);
-    }
+  function playMusic() {
+    music.volume = 0.3;
+    music.play();
+  }
 
-    function createBubbles() {
-      const canvas = document.getElementById("gameCanvas");
-      canvas.innerHTML = "";
-      for (let i = 0; i < 10; i++) {
-        const bubble = document.createElement("div");
-        bubble.className = "bubble";
-        bubble.style.top = Math.random() * 250 + "px";
-        bubble.style.left = Math.random() * 550 + "px";
-        bubble.onclick = () => bubble.remove();
-        canvas.appendChild(bubble);
-      }
-    }
-    createBubbles();
-  </script>
+  function pauseMusic() {
+    music.pause();
+  }
+</script>
+
 </body>
 </html>
+
