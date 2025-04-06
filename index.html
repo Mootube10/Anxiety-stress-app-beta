@@ -94,12 +94,18 @@
 <div id="menuButton" onclick="toggleSidebar()">☰ Menu</div>
 
 <div class="sidebar" id="sidebar">
+<div class="sidebar" id="sidebar" style="display: flex;">
   <button class="button" onclick="showSection('home')">Home</button>
   <button class="button" onclick="showSection('chatbot')">AI Companion</button>
   <button class="button" onclick="showSection('tracker')">Mood Tracker</button>
   <button class="button" onclick="showSection('journal')">Journal</button>
   <button class="button" onclick="showSection('game')">Mini Game</button>
   <button class="button" onclick="showSection('meditation')">Meditation</button>
+  <button class="button" onclick="showSection('motivate')">Motivational Msgs</button>
+  <button class="button" onclick="showSection('crisis')">Crisis Help</button>
+  <a class="link-button" href="https://yourcompanywebsite.com" target="_blank">Support</a>
+</div>
+
 </div>
 
 <audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
