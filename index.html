@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -91,57 +90,40 @@
     }
   </style>
 </head>
-<body>
-
-<div id="menuButton" onclick="toggleSidebar()">☰ Menu</div>
-
-<div class="sidebar" id="sidebar">
+<body><div id="menuButton" onclick="toggleSidebar()">☰ Menu</div><div class="sidebar" id="sidebar">
   <button class="button" onclick="showSection('home')">Home</button>
   <button class="button" onclick="showSection('chatbot')">AI Companion</button>
   <button class="button" onclick="showSection('tracker')">Mood Tracker</button>
   <button class="button" onclick="showSection('journal')">Journal</button>
   <button class="button" onclick="showSection('game')">Mini Game</button>
   <button class="button" onclick="showSection('meditation')">Meditation</button>
-  <button class="button" onclick="window.open('https://yourcompanywebsite.com', '_blank')">Support</button>
-</div>
+</div><audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
 
-<audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
-
-<div id="home" class="container">Welcome to Serenity Hub 💙</div>
-
-<div id="chatbot" class="container hidden">
+<div id="home" class="container">
+  <h2>Welcome to Serenity Hub 💙</h2>
+  <p>Your safe space to relax, reflect, and recharge.</p>
+</div><div id="chatbot" class="container hidden">
   <h2>AI Companion</h2>
   <div id="chatBox"></div>
   <input type="text" id="chatInput" placeholder="Type your message here...">
   <button class="button" onclick="sendChat()">Send</button>
-</div>
-
-<div id="tracker" class="container hidden">
+</div><div id="tracker" class="container hidden">
   <h2>Mood Tracker</h2>
   <input type="text" id="moodInput" placeholder="How are you feeling today?">
   <button class="button" onclick="trackMood()">Submit Mood</button>
   <div id="moodLog"></div>
-</div>
-
-<div id="journal" class="container hidden">
+</div><div id="journal" class="container hidden">
   <h2>Journal</h2>
   <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
   <button class="button" onclick="saveJournal()">Save</button>
-</div>
-
-<div id="game" class="container hidden">
+</div><div id="game" class="container hidden">
   <h2>Relaxing Mini Game</h2>
   <p>Click the floating bubbles!</p>
   <div id="bubbleGame"></div>
-</div>
-
-<div id="meditation" class="container hidden">
+</div><div id="meditation" class="container hidden">
   <h2>Meditation Room</h2>
   <p>Relax and enjoy the music 🌿</p>
-  <textarea placeholder="Write down your thoughts..."></textarea>
-</div>
-
-<script>
+</div><script>
   const music = document.getElementById('backgroundMusic');
   const sidebar = document.getElementById('sidebar');
   const chatBox = document.getElementById('chatBox');
@@ -181,14 +163,21 @@
   }
 
   function getResponse(msg) {
-    const responses = [
-      "I'm here for you.",
-      "That sounds tough. Want to talk more about it?",
-      "It's okay to feel this way.",
-      "You're not alone.",
-      "Take a deep breath. You're doing great."
-    ];
-    return responses[Math.floor(Math.random() * responses.length)];
+    const message = msg.toLowerCase();
+
+    if (message.includes("hello") || message.includes("hi")) {
+      return "Hey there! How are you feeling today?";
+    } else if (message.includes("i feel sad") || message.includes("i'm sad")) {
+      return "I'm sorry you're feeling that way. Want to talk about it?";
+    } else if (message.includes("anxious") || message.includes("nervous")) {
+      return "It's okay to feel anxious. Try taking a deep breath with me.";
+    } else if (message.includes("happy") || message.includes("great")) {
+      return "That's amazing to hear! I'm really glad you're doing well.";
+    } else if (message.includes("thank you")) {
+      return "You're very welcome. I'm always here for you.";
+    } else {
+      return "I'm here to listen. Tell me more about how you're feeling.";
+    }
   }
 
   function trackMood() {
@@ -225,7 +214,5 @@
   }
 
   createBubbles();
-</script>
-
-</body>
+</script></body>
 </html>
