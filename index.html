@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -90,42 +91,57 @@
     }
   </style>
 </head>
-<body><div id="menuButton" onclick="toggleSidebar()">☰ Menu</div><div class="sidebar" id="sidebar">
+<body>
+
+<div id="menuButton" onclick="toggleSidebar()">☰ Menu</div>
+
+<div class="sidebar" id="sidebar">
   <button class="button" onclick="showSection('home')">Home</button>
   <button class="button" onclick="showSection('chatbot')">AI Companion</button>
   <button class="button" onclick="showSection('tracker')">Mood Tracker</button>
   <button class="button" onclick="showSection('journal')">Journal</button>
   <button class="button" onclick="showSection('game')">Mini Game</button>
   <button class="button" onclick="showSection('meditation')">Meditation</button>
-  <button class="button" onclick="window.location.href='https://yourcompanywebsite.com'">Our Website</button>
-  <button class="button" onclick="window.location.href='https://yourcompanywebsite.com/support'">Support</button>
   <button class="button" onclick="showSection('donations')">Donations</button>
-</div><audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
+  <button class="button" onclick="window.open('https://yourcompanywebsite.com', '_blank')">Our Website</button>
+  <button class="button" onclick="window.open('https://yourcompanywebsite.com/support', '_blank')">Support</button>
+</div>
 
-<div id="home" class="container">
-  <h2>Welcome to Serenity Hub 💙</h2>
-  <p>This app is here to help you manage your anxiety, relax, and find support when you need it most.</p>
-</div><div id="chatbot" class="container hidden">
+<audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
+
+<div id="home" class="container">Welcome to Serenity Hub 💙<br><br>We're so glad you're here. Use the menu to explore your companion, journal your thoughts, or simply relax.</div>
+
+<div id="chatbot" class="container hidden">
   <h2>AI Companion</h2>
   <div id="chatBox"></div>
   <input type="text" id="chatInput" placeholder="Type your message here...">
   <button class="button" onclick="sendChat()">Send</button>
-</div><div id="tracker" class="container hidden">
+</div>
+
+<div id="tracker" class="container hidden">
   <h2>Mood Tracker</h2>
   <input type="text" id="moodInput" placeholder="How are you feeling today?">
   <button class="button" onclick="trackMood()">Submit Mood</button>
   <div id="moodLog"></div>
-</div><div id="journal" class="container hidden">
+</div>
+
+<div id="journal" class="container hidden">
   <h2>Journal</h2>
   <textarea id="journalEntry" placeholder="Write your thoughts..."></textarea>
   <button class="button" onclick="saveJournal()">Save</button>
-</div><div id="game" class="container hidden">
+</div>
+
+<div id="game" class="container hidden">
   <h2>Relaxing Mini Game</h2>
   <p>Click the floating bubbles!</p>
   <div id="bubbleGame"></div>
-</div><div id="meditation" class="container hidden">
+</div>
+
+<div id="meditation" class="container hidden">
   <h2>Meditation Room</h2>
   <p>Relax and enjoy the music 🌿</p>
+</div>
+
 <div id="donations" class="container hidden">
   <h2>Support Our Mission ❤️</h2>
   <p>Your donation helps us grow, provide mental health tools, and support people in need. Thank you!</p>
@@ -139,7 +155,7 @@
   </div>
 </div>
 
-</div><script>
+<script>
   const music = document.getElementById('backgroundMusic');
   const sidebar = document.getElementById('sidebar');
   const chatBox = document.getElementById('chatBox');
@@ -164,10 +180,10 @@
 
   function sendChat() {
     const input = document.getElementById('chatInput');
-    const userText = input.value.trim().toLowerCase();
+    const userText = input.value.trim();
     if (userText) {
       const userMsg = document.createElement('p');
-      userMsg.textContent = `You: ${input.value}`;
+      userMsg.textContent = `You: ${userText}`;
       chatBox.appendChild(userMsg);
 
       const response = document.createElement('p');
@@ -179,11 +195,15 @@
   }
 
   function getResponse(msg) {
-    if (msg.includes("hello") || msg.includes("hi")) return "Hello there! How can I help you today?";
-    if (msg.includes("sad")) return "I'm sorry you're feeling that way. Want to talk about it?";
-    if (msg.includes("anxious")) return "Try taking deep breaths. I'm here with you.";
-    if (msg.includes("help")) return "I'm always here to help. What do you need right now?";
-    return "I'm here for you. Tell me more.";
+    const responses = {
+      hello: "Hi there! How can I support you today?",
+      help: "I'm here for you. What are you struggling with?",
+      sad: "It's okay to feel down sometimes. You're not alone.",
+      anxious: "Take a deep breath with me. You're doing great.",
+      default: "Tell me more. I'm listening."
+    };
+    msg = msg.toLowerCase();
+    return responses[msg] || responses.default;
   }
 
   function trackMood() {
@@ -220,5 +240,7 @@
   }
 
   createBubbles();
-</script></body>
+</script>
+
+</body>
 </html>
