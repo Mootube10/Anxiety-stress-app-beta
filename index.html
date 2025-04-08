@@ -70,11 +70,8 @@
       border-radius: 6px;
       border: 1px solid #ccc;
     }
-    #bubbleGame {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
+    #emotionWheel button {
+      margin: 5px;
     }
     #chatBox {
       background-color: #f0f8ff;
@@ -102,14 +99,41 @@
   <button class="button" onclick="showSection('journal')">Journal</button>
   <button class="button" onclick="showSection('game')">Mini Game</button>
   <button class="button" onclick="showSection('meditation')">Meditation</button>
+  <button class="button" onclick="showSection('worryJar')">Digital Worry Jar</button>
+  <button class="button" onclick="showSection('emotionWheel')">Emotion Selector</button>
+  <button class="button" onclick="showSection('memoryVault')">Memory Vault</button>
+  <button class="button" onclick="showSection('messageFuture')">Message to Future Me</button>
+  <button class="button" onclick="showSection('positivityWall')">Positivity Wall</button>
+  <button class="button" onclick="showSection('crisisGuide')">Crisis Guide</button>
+  <button class="button" onclick="showSection('triggerTracker')">Trigger Tracker</button>
+  <button class="button" onclick="showSection('emotionTimeline')">Emotion Timeline</button>
+  <button class="button" onclick="showSection('distractionSpinner')">Distraction Spinner</button>
   <button class="button" onclick="showSection('donations')">Donations</button>
   <button class="button" onclick="window.open('https://mootube10.github.io/Cyberfusion/', '_blank')">Our Website</button>
   <button class="button" onclick="window.open('https://mootube10.github.io/Cyberfusion/', '_blank')">Support</button>
+
 </div>
 
 <audio id="backgroundMusic" src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" loop></audio>
 
-<div id="home" class="container">Welcome to Serenity Hub 💙<br><br>We're so glad you're here. Use the menu to explore your companion, journal your thoughts, or simply relax.</div>
+<div id="donations" class="container hidden">
+  <h2>Support Our Mission ❤️</h2>
+  <p>Your donation helps us grow, provide mental health tools, and support people in need. Thank you!</p>
+  <div style="margin-top: 20px;">
+    <button class="button" onclick="window.open('https://buy.stripe.com/4gw7uw1ZxfcP6Fq3cd', '_blank')">0.50p Donation</button>
+    <button class="button" onclick="window.open('https://buy.stripe.com/eVag127jRd4HfbW28a', '_blank')">£1 Donation</button>
+    <button class="button" onclick="window.open('https://buy.stripe.com/4gwg12bA72q31l6004', '_blank')">£5 Donation</button>
+    <button class="button" onclick="window.open('https://buy.stripe.com/14k16833B3u78Ny8wz', '_blank')">£10 Donation</button>
+    <button class="button" onclick="window.open('https://buy.stripe.com/4gwg127jR0hVaVG28e', '_blank')">£15 Donation</button>
+    <button class="button" onclick="window.open('https://buy.stripe.com/14kaGIeMj8Or9RC149', '_blank')">£20 Donation</button>
+  </div>
+</div>
+
+  
+<div id="home" class="container">
+  <h1>Welcome to Serenity Hub 💙</h1>
+  <p>Your calm in the storm. Use the menu to explore tools, support, and peace.</p>
+</div>
 
 <div id="chatbot" class="container hidden">
   <h2>AI Companion</h2>
@@ -142,104 +166,213 @@
   <p>Relax and enjoy the music 🌿</p>
 </div>
 
-<div id="donations" class="container hidden">
-  <h2>Support Our Mission ❤️</h2>
-  <p>Your donation helps us grow, provide mental health tools, and support people in need. Thank you!</p>
-  <div style="margin-top: 20px;">
-    <button class="button" onclick="window.open('https://buy.stripe.com/4gw7uw1ZxfcP6Fq3cd', '_blank')">0.50p Donation</button>
-    <button class="button" onclick="window.open('https://buy.stripe.com/eVag127jRd4HfbW28a', '_blank')">£1 Donation</button>
-    <button class="button" onclick="window.open('https://buy.stripe.com/4gwg12bA72q31l6004', '_blank')">£5 Donation</button>
-    <button class="button" onclick="window.open('https://buy.stripe.com/14k16833B3u78Ny8wz', '_blank')">£10 Donation</button>
-    <button class="button" onclick="window.open('https://buy.stripe.com/4gwg127jR0hVaVG28e', '_blank')">£15 Donation</button>
-    <button class="button" onclick="window.open('https://buy.stripe.com/14kaGIeMj8Or9RC149', '_blank')">£20 Donation</button>
-  </div>
+<div id="worryJar" class="container hidden">
+  <h2>Digital Worry Jar</h2>
+  <textarea id="worryInput" placeholder="Type your worry..."></textarea>
+  <button class="button" onclick="dropWorry()">Drop It</button>
+  <button class="button" onclick="destroyWorries()">Destroy All</button>
+  <div id="worryList"></div>
+</div>
+
+<div id="emotionWheel" class="container hidden">
+  <h2>Emotion Selector</h2>
+  <div id="emotionButtons"></div>
+  <div id="emotionTools"></div>
+</div>
+
+<div id="memoryVault" class="container hidden">
+  <h2>Memory Vault</h2>
+  <textarea id="memoryInput" placeholder="Add a happy memory..."></textarea>
+  <button class="button" onclick="saveMemory()">Save</button>
+  <div id="memoryList"></div>
+</div>
+
+<div id="messageFuture" class="container hidden">
+  <h2>Message to Future Me</h2>
+  <textarea id="futureMessage" placeholder="Write something to your future self..."></textarea>
+  <button class="button" onclick="saveFutureMessage()">Schedule</button>
+  <div id="futureMessageList"></div>
+</div>
+
+<div id="positivityWall" class="container hidden">
+  <h2>Positivity Wall</h2>
+  <textarea id="positiveMessage" placeholder="Leave an uplifting message..."></textarea>
+  <button class="button" onclick="addPositivity()">Share</button>
+  <div id="positivityMessages"></div>
+</div>
+
+<div id="crisisGuide" class="container hidden">
+  <h2>Crisis Companion Guide</h2>
+  <ol>
+    <li>Breathe in deeply for 4 seconds</li>
+    <li>Hold for 7 seconds</li>
+    <li>Exhale slowly for 8 seconds</li>
+    <li>Place hand on heart and say: "I am safe. I am okay."</li>
+    <li>Repeat a calming phrase</li>
+  </ol>
+</div>
+
+<div id="triggerTracker" class="container hidden">
+  <h2>Trigger Tracker</h2>
+  <input type="text" id="triggerInput" placeholder="What triggered you?">
+  <input type="text" id="responseInput" placeholder="How did you respond?">
+  <button class="button" onclick="logTrigger()">Log Trigger</button>
+  <div id="triggerList"></div>
+</div>
+
+<div id="emotionTimeline" class="container hidden">
+  <h2>Emotion Timeline</h2>
+  <p>[Timeline placeholder - chart could go here]</p>
+</div>
+
+<div id="distractionSpinner" class="container hidden">
+  <h2>Distraction Spinner</h2>
+  <button class="button" onclick="spinDistraction()">Spin!</button>
+  <p id="spinnerResult"></p>
 </div>
 
 <script>
-  const music = document.getElementById('backgroundMusic');
+  const sections = document.querySelectorAll('.container');
   const sidebar = document.getElementById('sidebar');
-  const chatBox = document.getElementById('chatBox');
-  const moodLog = document.getElementById('moodLog');
   const bubbleGame = document.getElementById('bubbleGame');
+  const chatBox = document.getElementById('chatBox');
 
   function toggleSidebar() {
     sidebar.style.display = sidebar.style.display === 'flex' ? 'none' : 'flex';
   }
 
-  function showSection(sectionId) {
-    const sections = document.querySelectorAll('.container');
-    sections.forEach(sec => sec.classList.add('hidden'));
-    document.getElementById(sectionId).classList.remove('hidden');
-    if (sectionId === 'meditation') {
-      music.volume = 0.4;
-      music.play();
-    } else {
-      music.pause();
-    }
+  function showSection(id) {
+    sections.forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
   }
 
   function sendChat() {
     const input = document.getElementById('chatInput');
-    const userText = input.value.trim();
-    if (userText) {
-      const userMsg = document.createElement('p');
-      userMsg.textContent = `You: ${userText}`;
-      chatBox.appendChild(userMsg);
-
-      const response = document.createElement('p');
-      response.textContent = `AI: ${getResponse(userText)}`;
-      chatBox.appendChild(response);
-      input.value = '';
-      chatBox.scrollTop = chatBox.scrollHeight;
+    const msg = input.value.trim().toLowerCase();
+    if (msg) {
+      chatBox.innerHTML += `<p>You: ${msg}</p>`;
+    let response = "I'm here to listen. Tell me more.";
+    if (input.includes("hello") || input.includes("hi")) {
+      response = "Hello! How are you feeling today?";
+    } else if (input.includes("stress") || input.includes("anxiety")) {
+      response = "I'm here to help! Try taking deep breaths or writing down your thoughts. Would you like some relaxation tips?";
+    } else if (input.includes("panic attack") || input.includes("feeling overwhelmed")) {
+      response = "I understand this is tough. Try to focus on your breathing—inhale for 4 seconds, hold for 4, and exhale for 4. You're not alone!";
+    } else if (input.includes("sad") || input.includes("depressed")) {
+      response = "I'm really sorry you're feeling this way. It's okay to feel like this. Maybe try listening to soothing music or step outside for some fresh air.";
+    } else if (input.includes("nervous") || input.includes("worried")) {
+      response = "It's okay to feel nervous sometimes. Try to focus on grounding yourself—notice 5 things you can see, 4 things you can touch, 3 things you can hear, 2 things you can smell, and 1 thing you can taste.";
+    } else if (input.includes("happy") || input.includes("good")) {
+      response = "That's wonderful! Keep doing what makes you feel great and keep this positivity flowing!";
+    } else if (input.includes("thank you")) {
+      response = "You're welcome! I'm always here if you need to talk.";
+    } else if (input.includes("help") || input.includes("assist")) {
+      response = "I'm here to assist. Do you need some coping strategies or resources?";
+    } else if (input.includes("strategies")) {
+      response = "Here are some strategies to manage anxiety:\n\n" + 
+      "1. Deep Breathing: Inhale deeply for 4 seconds, hold for 4, exhale for 4.\n" +
+      "2. Progressive Muscle Relaxation.\n" +
+      "3. Mindfulness Meditation.\n" +
+      "4. Journaling.\n" +
+      "5. Exercise.\n" +
+      "6. Visualization.\n" +
+      "7. Grounding Techniques.\n" +
+      "8. Self-Compassion.";
+    } else if (input.includes("resources")) {
+      response = "Here are some resources:\n\n1. National Helpline: 1-800-273-TALK\n" +
+      "2. Local mental health services.\n" +
+      "3. Free online therapy services.";
     }
+    return response;
   }
 
-  function getResponse(msg) {
-    const responses = {
-      hello: "Hi there! How can I support you today?",
-      help: "I'm here for you. What are you struggling with?",
-      sad: "It's okay to feel down sometimes. You're not alone.",
-      anxious: "Take a deep breath with me. You're doing great.",
-      default: "Tell me more. I'm listening."
-    };
-    msg = msg.toLowerCase();
-    return responses[msg] || responses.default;
-  }
 
   function trackMood() {
-    const input = document.getElementById('moodInput');
-    const mood = input.value.trim();
-    if (mood) {
-      const entry = document.createElement('p');
-      entry.textContent = `Mood: ${mood}`;
-      moodLog.appendChild(entry);
-      input.value = '';
-    }
+    const mood = document.getElementById('moodInput').value.trim();
+    if (mood) document.getElementById('moodLog').innerHTML += `<p>Mood: ${mood}</p>`;
+    document.getElementById('moodInput').value = '';
   }
 
   function saveJournal() {
-    const journal = document.getElementById('journalEntry');
-    if (journal.value.trim()) {
-      alert('Journal entry saved!');
-      journal.value = '';
-    }
+    const entry = document.getElementById('journalEntry').value.trim();
+    if (entry) alert('Journal entry saved!');
+    document.getElementById('journalEntry').value = '';
   }
 
   function createBubbles() {
     bubbleGame.innerHTML = '';
     for (let i = 0; i < 20; i++) {
-      const bubble = document.createElement('div');
-      bubble.style.width = bubble.style.height = '40px';
-      bubble.style.borderRadius = '50%';
-      bubble.style.background = '#add8e6';
-      bubble.style.margin = '10px';
-      bubble.style.cursor = 'pointer';
-      bubble.addEventListener('click', () => bubble.remove());
-      bubbleGame.appendChild(bubble);
+      const b = document.createElement('div');
+      b.style.width = b.style.height = '40px';
+      b.style.borderRadius = '50%';
+      b.style.background = '#add8e6';
+      b.style.margin = '10px';
+      b.style.cursor = 'pointer';
+      b.onclick = () => b.remove();
+      bubbleGame.appendChild(b);
+    }
+  }
+  createBubbles();
+
+  function dropWorry() {
+    const worry = document.getElementById('worryInput').value.trim();
+    if (worry) document.getElementById('worryList').innerHTML += `<p>${worry}</p>`;
+    document.getElementById('worryInput').value = '';
+  }
+
+  function destroyWorries() {
+    document.getElementById('worryList').innerHTML = '<p>🔥 Worries destroyed.</p>';
+  }
+
+  const emotions = [
+    { name: 'Happy', tools: 'Celebrate it! Smile more.' },
+    { name: 'Overwhelmed', tools: 'Take deep breaths. Step away for a moment.' },
+    { name: 'Sad', tools: 'Talk to someone. Write it down.' },
+    { name: 'Angry', tools: 'Count to 10. Try a walk.' },
+  ];
+  const emotionButtons = document.getElementById('emotionButtons');
+  const emotionTools = document.getElementById('emotionTools');
+  emotions.forEach(e => {
+    const btn = document.createElement('button');
+    btn.className = 'button';
+    btn.innerText = e.name;
+    btn.onclick = () => emotionTools.innerHTML = `<p>${e.tools}</p>`;
+    emotionButtons.appendChild(btn);
+  });
+
+  function saveMemory() {
+    const memory = document.getElementById('memoryInput').value.trim();
+    if (memory) document.getElementById('memoryList').innerHTML += `<p>${memory}</p>`;
+    document.getElementById('memoryInput').value = '';
+  }
+
+  function saveFutureMessage() {
+    const msg = document.getElementById('futureMessage').value.trim();
+    if (msg) document.getElementById('futureMessageList').innerHTML += `<p>🔒 ${msg}</p>`;
+    document.getElementById('futureMessage').value = '';
+  }
+
+  function addPositivity() {
+    const msg = document.getElementById('positiveMessage').value.trim();
+    if (msg) document.getElementById('positivityMessages').innerHTML += `<p>💬 ${msg}</p>`;
+    document.getElementById('positiveMessage').value = '';
+  }
+
+  function logTrigger() {
+    const trigger = document.getElementById('triggerInput').value.trim();
+    const response = document.getElementById('responseInput').value.trim();
+    if (trigger && response) {
+      document.getElementById('triggerList').innerHTML += `<p>Trigger: ${trigger} → Response: ${response}</p>`;
+      document.getElementById('triggerInput').value = '';
+      document.getElementById('responseInput').value = '';
     }
   }
 
-  createBubbles();
+  const distractions = ["Name 5 red things", "Draw a cloud", "Listen to your favorite song", "Drink some water", "Step outside for a moment"];
+  function spinDistraction() {
+    const random = distractions[Math.floor(Math.random() * distractions.length)];
+    document.getElementById('spinnerResult').textContent = random;
+  }
 </script>
 
 </body>
