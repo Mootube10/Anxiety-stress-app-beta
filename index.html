@@ -30,19 +30,24 @@
     .sidebar.open {
       transform: translateX(0);
     }
-    /* Default container style without extra left margin */
+    #menuButton {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
     .container {
       padding: 20px;
       text-align: center;
       background: rgba(255, 255, 255, 0.95);
-      margin: 60px 20px 20px 20px;
+      margin: 60px 20px 20px 240px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      transition: margin-left 0.3s ease;
-    }
-    /* Add this class when the sidebar is open to shift the content */
-    .container.shifted {
-      margin-left: 240px;
     }
     .hidden {
       display: none;
@@ -233,10 +238,6 @@
 
   function toggleSidebar() {
     sidebar.classList.toggle("open");
-    // Toggle the "shifted" class for all containers so they adjust their left margin dynamically.
-    document.querySelectorAll('.container').forEach(function(container) {
-      container.classList.toggle("shifted");
-    });
   }
   
   function showSection(id) {
