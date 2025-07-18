@@ -65,6 +65,8 @@
       margin: 60px 20px 20px 240px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 999;
     }
 
     .hidden {
@@ -418,7 +420,6 @@
     sections.forEach(s => s.classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
   }
-  
 </script>
 
 </body>
